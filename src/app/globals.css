@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/* 锚点平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  color-scheme: light;
+
+  --background: #f8f4ff;
+  --foreground: #2b2b35;
+
+  --accent: #b4fef2;
+  --accent-2: #c4b5fd;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --font-sans: var(--font-geist-sans);
+}
+
+/* 统一视觉方案：禁用随系统浅色模式的颜色覆写，确保浅/深模式视觉一致性 */
+/*
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #f7f7fb;
+    --foreground: #121316;
+  }
+}
+*/
+
+body {
+  background:
+    radial-gradient(circle at top left,
+      rgba(255, 192, 203, 0.18),
+      transparent 25%),
+
+    radial-gradient(circle at top right,
+      rgba(196, 181, 253, 0.16),
+      transparent 30%),
+
+    radial-gradient(circle at bottom left,
+      rgba(186, 230, 253, 0.14),
+      transparent 28%),
+
+    linear-gradient(
+      135deg,
+      #fdf7ff 0%,
+      #f8f4ff 35%,
+      #f2f5ff 70%,
+      #eef2ff 100%
+    );
+
+  color: #1f2937;
+
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+/* 拟物卡片（皮层质感 + 柔光 + 立体阴影） */
+.card-skeu {
+  background: rgba(255,255,255,0.22);
+
+  backdrop-filter: blur(24px);
+
+  -webkit-backdrop-filter: blur(24px);
+
+  border-radius: 40px;
+
+  border: 1px solid rgba(255,255,255,0.35);
+
+  box-shadow:
+  0 20px 60px rgba(120, 110, 160, 0.12),
+  0 8px 24px rgba(255,255,255,0.08),
+  inset 0 1px 1px rgba(255,255,255,0.18);
+}
+
+/* 高光边缘（轻微的顶边高光） */
+
+
+/* 光斑纹理 */
+.texture-spot {
+  background:
+    radial-gradient(circle at top left,
+      rgba(255,255,255,0.35),
+      transparent 40%),
+
+    radial-gradient(circle at bottom right,
+      rgba(220,210,255,0.25),
+      transparent 40%);
+}
+
+/* 标题使用手写字体（Pacifico，本地字体） */
+h1 {
+  font-family:
+    var(--font-geist-sans),
+    system-ui,
+    sans-serif;
+
+  font-weight: 700;
+
+  letter-spacing: -0.04em;
+}
+
+/* 删除霓虹文字样式（不再使用） */
+/* .neon-text {
+  text-shadow: 0 0 6px color-mix(in oklab, var(--accent) 50%, white 50%),
+               0 0 12px color-mix(in oklab, var(--accent-2) 40%, white 60%);
+}
+
+/* 隐藏全局滚动条（保留滚动功能） */
+html,
+body {
+  -ms-overflow-style: none;
+  /* IE/Edge 旧版 */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+  /* Chrome/Safari/Edge(Chromium) */
+}
+
+/* 可选：局部隐藏滚动条的工具类 */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

@@ -1,0 +1,58 @@
+{
+  "name": "qqhkx-homepage",
+  "version": "0.1.0",
+  "description": "🎨 现代化个人主页 - 基于 Next.js 15 + Framer Motion 的响应式个人品牌展示页面，支持环境变量配置，一键部署到 Vercel",
+  "keywords": [
+    "personal-homepage",
+    "portfolio",
+    "nextjs",
+    "react",
+    "framer-motion",
+    "tailwindcss",
+    "typescript",
+    "responsive-design",
+    "vercel",
+    "personal-website",
+    "modern-ui",
+    "animation",
+    "个人主页",
+    "作品集"
+  ],
+  "homepage": "https://qqhkx.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asydevf/qqhkx-homepage.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asydevf/qqhkx-homepage/issues"
+  },
+  "author": {
+    "name": "QQHKX",
+    "url": "https://qqhkx.com"
+  },
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "framer-motion": "^12.23.12",
+    "next": "15.4.6",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.4.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
