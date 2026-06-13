@@ -650,7 +650,7 @@ function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) 
  * 论文列表组件（默认显示前 3 篇，可展开全部）
  * @param papers - 论文数据数组
  */
-const PAPERS_DEFAULT_COUNT = 3;
+const PAPERS_DEFAULT_COUNT = 2;
 
 function PapersList({ papers }: { papers: PaperContent[] }) {
   const [showAll, setShowAll] = useState(false);
