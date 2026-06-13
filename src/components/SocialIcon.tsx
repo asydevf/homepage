@@ -39,9 +39,6 @@ export default function SocialIcon({ name, className = "", size = 24 }: SocialIc
       width={size}
       height={size}
       className={`inline-block ${className}`}
-      style={{
-        filter: "brightness(0) saturate(100%) invert(1)", // 将图标变为白色
-      }}
     />
   );
 }
