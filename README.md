@@ -47,7 +47,8 @@ npm run dev
 
 ```
 content/
-└── updates/              # 📝 研究日志（直接编辑 .md 文件）
+├── updates/              # 📝 研究日志（直接编辑 .md 文件）
+└── papers/               # 📄 论文笔记（直接编辑 .md 文件）
 scripts/
 └── build-updates.js      # 构建脚本：md → JSON
 src/
@@ -60,7 +61,8 @@ src/
 │   └── SocialIcon.tsx         # 社交平台图标
 └── data/
     ├── profile.ts        # 个人信息 + 项目 + 论文数据
-    └── updates.json      # 自动生成（勿手动编辑）
+    ├── updates.json      # 自动生成（勿手动编辑）
+    └── papers-content.json  # 自动生成（勿手动编辑）
 ```
 
 ## 配置
@@ -115,6 +117,60 @@ tags: [Diffusion, Motion]
 | `tags` | ❌ | 标签数组 |
 
 正文支持完整 Markdown 语法（标题、列表、代码块、引用等）。
+
+## 📄 论文笔记（不用写代码）
+
+在 `content/papers/` 目录创建 Markdown 文件即可添加论文笔记。
+
+### 操作步骤
+
+1. 打开 GitHub 仓库页面：`content/papers/`
+2. 点 **Add file** → **Create new file**
+3. 文件名：`论文简称.md`（如 `intergen.md`）
+4. 按模板填写 → Commit → 自动部署
+
+### Markdown 模板
+
+```markdown
+---
+title: "论文完整标题"
+authors: 作者 et al.
+venue: ICCV 2023
+year: 2023
+arxiv: https://arxiv.org/abs/xxxx.xxxxx
+progress: 60
+status: 阅读中
+repo: https://github.com/xxx/xxx
+tags: [Diffusion, Motion]
+---
+
+## 论文概述
+一句话说清楚论文做了什么...
+
+## 核心方法
+方法的关键点...
+
+## 阅读笔记
+你的理解和思考...
+
+## 复现进展
+- [x] 读完论文
+- [x] 跑通代码
+- [ ] 对比实验
+```
+
+**字段说明：**
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| `title` | ✅ | 论文标题 |
+| `authors` | ❌ | 作者 |
+| `venue` | ❌ | 会议/期刊 |
+| `year` | ❌ | 年份 |
+| `arxiv` | ❌ | arXiv 链接 |
+| `progress` | ❌ | 阅读进度 0-100 |
+| `status` | ❌ | 状态：已读 / 阅读中 / 复现中 / 已复现 |
+| `repo` | ❌ | 项目仓库地址 |
+| `tags` | ❌ | 标签数组 |
 
 ## 部署
 

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { profile, type SkillItem, type Update } from "@/data/profile";
 import updates from "@/data/updates.json";
+import papersContent from "@/data/papers-content.json";
 import { useMemo, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialIcon from "@/components/SocialIcon";
@@ -433,45 +434,11 @@ export default function Home() {
       </section>
 
       {/* 论文阅读 */}
-      <section id="papers" className="mx-auto max-w-6xl px-6 pb-20 scroll-mt-24">
-        <SectionTitle title="论文阅读" subtitle="近期关注的代表性论文" />
+      <section id="papers" className="mx-auto max-w-6xl px-6 pb-16 scroll-mt-24">
+        <SectionTitle title="论文阅读" subtitle="论文笔记、阅读进度与复现情况" />
         <div className="space-y-4">
-          {profile.papers.map((paper, idx) => (
-            <motion.div
-              key={paper.title}
-              initial={{ x: -20, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: idx * 0.08 }}
-            >
-              <Link
-                href={paper.url}
-                target="_blank"
-                        rel="noopener noreferrer"
-                className="group block relative card-skeu texture-spot p-5 hover:border-white/50 transition-all duration-300"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/15 to-pink-500/15 flex items-center justify-center">
-                    <svg className="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                    </svg>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-1">
-                      <h3 className="font-medium text-zinc-800 group-hover:text-purple-700 transition-colors truncate">
-                        {paper.title}
-                      </h3>
-                      <span className="flex-shrink-0 text-xs text-zinc-400 font-mono">{paper.venue}</span>
-                    </div>
-                    <p className="text-xs text-zinc-500 mb-2">{paper.authors}</p>
-                    <p className="text-sm text-zinc-600 leading-relaxed">{paper.highlight}</p>
-                  </div>
-                  <svg className="flex-shrink-0 w-4 h-4 text-zinc-300 group-hover:text-zinc-500 group-hover:translate-x-1 transition-all mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </Link>
-            </motion.div>
+          {(papersContent as PaperContent[]).map((paper, idx) => (
+            <PaperCard key={paper.title} paper={paper} idx={idx} />
           ))}
         </div>
       </section>
@@ -679,6 +646,159 @@ function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) 
         {title}
       </h2>
       <p className="text-zinc-500 text-sm md:text-base">{subtitle}</p>
+    </motion.div>
+  );
+}
+
+/**
+ * 论文卡片组件（可展开）
+ * @param paper - 论文数据
+ * @param idx - 序号（用于动画延迟）
+ */
+import type { PaperContent } from "@/data/profile";
+
+function PaperCard({ paper, idx }: { paper: PaperContent; idx: number }) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ x: -20, opacity: 0 }}
+      whileInView={{ x: 0, opacity: 1 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.5, ease: "easeOut", delay: idx * 0.08 }}
+      className="relative card-skeu texture-spot overflow-hidden"
+    >
+      {/* 可点击的头部 */}
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full text-left p-5 flex items-start gap-4 hover:bg-white/5 transition-colors"
+      >
+        <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/15 to-pink-500/15 flex items-center justify-center">
+          <svg className="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+          </svg>
+        </div>
+        <div className="flex-1 min-w-0">
+          {/* 标题行 */}
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
+            <h3 className="font-medium text-zinc-800 text-sm md:text-base leading-tight">
+              {paper.title}
+            </h3>
+            {paper.venue && (
+              <span className="text-xs text-zinc-400 font-mono">{paper.venue}</span>
+            )}
+            {paper.status && (
+              <span className={`px-2 py-0.5 text-[10px] rounded-full border ${
+                paper.status === "已复现"
+                  ? "bg-emerald-50 border-emerald-200 text-emerald-600"
+                  : paper.status === "复现中"
+                  ? "bg-blue-50 border-blue-200 text-blue-600"
+                  : paper.status === "已读"
+                  ? "bg-purple-50 border-purple-200 text-purple-600"
+                  : "bg-zinc-50 border-zinc-200 text-zinc-500"
+              }`}>
+                {paper.status}
+              </span>
+            )}
+          </div>
+          {/* 作者 */}
+          {paper.authors && (
+            <p className="text-xs text-zinc-500 mb-2">{paper.authors}</p>
+          )}
+          {/* 进度条 */}
+          {paper.progress !== undefined && (
+            <div className="flex items-center gap-2 mb-2">
+              <div className="flex-1 h-1.5 bg-zinc-200/60 rounded-full overflow-hidden max-w-48">
+                <div
+                  className="h-full bg-gradient-to-r from-purple-400 to-pink-400 rounded-full transition-all"
+                  style={{ width: `${paper.progress}%` }}
+                />
+              </div>
+              <span className="text-[11px] text-zinc-400">{paper.progress}%</span>
+            </div>
+          )}
+          {/* 标签 */}
+          {paper.tags && paper.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {paper.tags.map((tag) => (
+                <span key={tag} className="px-2 py-0.5 text-[10px] rounded-full bg-white/40 border border-white/50 text-zinc-500">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+        {/* 展开箭头 */}
+        <svg
+          className={`flex-shrink-0 w-4 h-4 text-zinc-400 transition-transform duration-200 mt-1 ${expanded ? "rotate-180" : ""}`}
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+
+      {/* 展开内容 */}
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="px-5 pb-5 border-t border-white/10 pt-4">
+              {/* 项目地址 */}
+              {paper.repo && paper.repo !== "" && (
+                <div className="mb-3">
+                  <Link
+                    href={paper.repo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-purple-600 hover:text-purple-700 transition-colors"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+                    </svg>
+                    查看项目代码
+                  </Link>
+                </div>
+              )}
+              {/* arXiv 链接 */}
+              {paper.arxiv && (
+                <div className="mb-3">
+                  <Link
+                    href={paper.arxiv}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    arXiv 论文链接
+                  </Link>
+                </div>
+              )}
+              {/* 笔记正文 */}
+              {paper.content && (
+                <div
+                  className="prose prose-sm prose-zinc max-w-none text-zinc-600 leading-relaxed
+                    [&_h2]:text-base [&_h2]:font-semibold [&_h2]:text-zinc-700 [&_h2]:mt-4 [&_h2]:mb-2
+                    [&_h3]:text-sm [&_h3]:font-medium [&_h3]:text-zinc-700 [&_h3]:mt-3 [&_h3]:mb-1.5
+                    [&_p]:mb-3 [&_p]:text-sm
+                    [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ul]:space-y-1
+                    [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_ol]:space-y-1
+                    [&_li]:text-sm
+                    [&_code]:text-xs [&_code]:bg-purple-50 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded
+                    [&_blockquote]:border-l-2 [&_blockquote]:border-purple-300 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-zinc-500"
+                  dangerouslySetInnerHTML={{ __html: paper.content }}
+                />
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

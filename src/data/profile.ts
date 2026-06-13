@@ -54,6 +54,29 @@ export type Update = {
   content: string;
 };
 
+export type PaperContent = {
+  /** 论文标题 */
+  title: string;
+  /** 作者 */
+  authors?: string;
+  /** 发表会议/期刊 */
+  venue?: string;
+  /** 年份 */
+  year?: number;
+  /** arXiv 链接 */
+  arxiv?: string;
+  /** 阅读进度 0-100 */
+  progress?: number;
+  /** 复现状态 */
+  status?: string;
+  /** 项目仓库 */
+  repo?: string;
+  /** 标签 */
+  tags?: string[];
+  /** 渲染后的笔记 HTML */
+  content: string;
+};
+
 export type ResearchDirection = {
   /** 方向名称 */
   title: string;
