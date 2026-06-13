@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { profile, type SkillItem } from "@/data/profile";
+import { profile, type SkillItem, type Update } from "@/data/profile";
+import updates from "@/data/updates.json";
 import { useMemo, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialIcon from "@/components/SocialIcon";
@@ -474,6 +475,66 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* 研究日志 */}
+      {updates.length > 0 && (
+        <section id="updates" className="mx-auto max-w-6xl px-6 pb-20 scroll-mt-24">
+          <SectionTitle title="研究日志" subtitle="项目进展、论文心得与日常收获" />
+          <div className="space-y-6">
+            {(updates as Update[]).map((entry, idx) => (
+              <motion.div
+                key={`${entry.date}-${entry.title}`}
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.5, ease: "easeOut", delay: idx * 0.05 }}
+                className="relative card-skeu texture-spot p-6"
+              >
+                {/* 顶部：日期 + 分类 + 状态 */}
+                <div className="flex flex-wrap items-center gap-3 mb-4">
+                  <span className="text-xs font-mono text-zinc-400">{entry.date}</span>
+                  <span className="px-2 py-0.5 text-[11px] rounded-full bg-purple-100/60 border border-purple-200/40 text-purple-600">
+                    {entry.category}
+                  </span>
+                  {entry.status && (
+                    <span className={`px-2 py-0.5 text-[11px] rounded-full border ${
+                      entry.status === "已完成"
+                        ? "bg-emerald-50 border-emerald-200 text-emerald-600"
+                        : entry.status === "进行中"
+                        ? "bg-blue-50 border-blue-200 text-blue-600"
+                        : "bg-zinc-50 border-zinc-200 text-zinc-500"
+                    }`}>
+                      {entry.status}
+                    </span>
+                  )}
+                  <div className="flex flex-wrap gap-1.5 ml-auto">
+                    {entry.tags.map((tag) => (
+                      <span key={tag} className="px-2 py-0.5 text-[10px] rounded-full bg-white/40 border border-white/50 text-zinc-500">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                {/* 标题 */}
+                <h3 className="text-lg font-semibold text-zinc-800 mb-3">{entry.title}</h3>
+                {/* 正文（markdown 渲染的 HTML） */}
+                <div
+                  className="prose prose-sm prose-zinc max-w-none text-zinc-600 leading-relaxed
+                    [&_h2]:text-base [&_h2]:font-semibold [&_h2]:text-zinc-700 [&_h2]:mt-4 [&_h2]:mb-2
+                    [&_h3]:text-sm [&_h3]:font-medium [&_h3]:text-zinc-700 [&_h3]:mt-3 [&_h3]:mb-1.5
+                    [&_p]:mb-3 [&_p]:text-sm
+                    [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ul]:space-y-1
+                    [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_ol]:space-y-1
+                    [&_li]:text-sm
+                    [&_code]:text-xs [&_code]:bg-purple-50 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded
+                    [&_blockquote]:border-l-2 [&_blockquote]:border-purple-300 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-zinc-500"
+                  dangerouslySetInnerHTML={{ __html: entry.content }}
+                />
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 联系方式/页脚 */}
       <footer className="border-t border-white/10">

@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import localFont from "next/font/local";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 /**
  * 手写字体（用于标题等特殊元素）
@@ -44,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body
-        className={`${geistSans.variable} ${pacifico.variable} antialiased bg-background text-foreground`}
+        className={`${GeistSans.variable} ${pacifico.variable} antialiased bg-background text-foreground`}
       >
         {children}
       </body>

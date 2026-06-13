@@ -39,6 +39,21 @@ export type StatItem = {
   href: string;
 };
 
+export type Update = {
+  /** 标题 */
+  title: string;
+  /** 日期 (YYYY-MM-DD) */
+  date: string;
+  /** 分类 */
+  category: string;
+  /** 状态 */
+  status: string;
+  /** 标签 */
+  tags: string[];
+  /** 渲染后的 HTML 内容 */
+  content: string;
+};
+
 export type ResearchDirection = {
   /** 方向名称 */
   title: string;
