@@ -1,0 +1,32 @@
+[
+  {
+    "title": "交互感知动作生成",
+    "emoji": "🔬",
+    "keywords": [
+      "Human Interaction",
+      "Motion Generation",
+      "Physics-aware"
+    ],
+    "content": "<p>研究多人场景下的交互动作合成，让模型理解人与人之间的物理互动关系，生成自然协调的交互动作序列。</p>\n"
+  },
+  {
+    "title": "文本驱动动作合成",
+    "emoji": "✍️",
+    "keywords": [
+      "Text2Motion",
+      "Language-Action Alignment",
+      "Fine-grained Control"
+    ],
+    "content": "<p>将自然语言描述映射为连续人体动作序列，探索语言与动作空间的对齐方法，实现细粒度的动作控制。</p>\n"
+  },
+  {
+    "title": "扩散模型与美学界面",
+    "emoji": "🎨",
+    "keywords": [
+      "Diffusion Models",
+      "Aesthetic Interface",
+      "Visual Generation"
+    ],
+    "content": "<p>探索扩散模型在视觉生成中的应用，同时研究如何构建具有美学价值的人机交互界面。</p>\n"
+  }
+]

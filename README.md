@@ -48,21 +48,27 @@ npm run dev
 ```
 content/
 ├── updates/              # 📝 研究日志（直接编辑 .md 文件）
-└── papers/               # 📄 论文笔记（直接编辑 .md 文件）
+├── papers/               # 📄 论文笔记（直接编辑 .md 文件）
+├── directions/           # 🔬 研究方向（直接编辑 .md 文件）
+├── projects/             # 🚀 项目展示（直接编辑 .md 文件）
+└── skills.md             # 💻 技术栈（直接编辑此文件）
 scripts/
 └── build-updates.js      # 构建脚本：md → JSON
 src/
 ├── app/
-│   ├── page.tsx          # 主页（Hero + 各板块 + 研究日志）
+│   ├── page.tsx          # 主页（所有板块）
 │   ├── layout.tsx        # 根布局 + 字体配置
 │   └── globals.css       # 全局样式 + 拟物卡片
 ├── components/
 │   ├── MouseTrackingOrbs.tsx  # 鼠标跟踪光球
 │   └── SocialIcon.tsx         # 社交平台图标
 └── data/
-    ├── profile.ts        # 个人信息 + 项目 + 论文数据
+    ├── profile.ts        # 个人信息配置
     ├── updates.json      # 自动生成（勿手动编辑）
-    └── papers-content.json  # 自动生成（勿手动编辑）
+    ├── papers-content.json  # 自动生成
+    ├── directions.json   # 自动生成
+    ├── projects-content.json  # 自动生成
+    └── skills.json       # 自动生成
 ```
 
 ## 配置
@@ -117,6 +123,66 @@ tags: [Diffusion, Motion]
 | `tags` | ❌ | 标签数组 |
 
 正文支持完整 Markdown 语法（标题、列表、代码块、引用等）。
+
+## 🔬 研究方向（不用写代码）
+
+在 `content/directions/` 目录创建 `.md` 文件即可添加研究方向。
+
+### 模板
+
+```markdown
+---
+title: 方向名称
+emoji: 🔬
+keywords: [关键词1, 关键词2]
+---
+
+这个方向的简要描述...
+```
+
+用数字前缀控制显示顺序：`01-xxx.md`、`02-xxx.md`。
+
+## 🚀 项目展示（不用写代码）
+
+在 `content/projects/` 目录创建 `.md` 文件即可添加项目。
+
+### 模板
+
+```markdown
+---
+title: 项目名称
+url: https://github.com/asydevf/xxx
+description: 一句话描述
+tags: [Next.js, TypeScript]
+status: 已完成
+---
+
+项目详细介绍...
+```
+
+`status` 可选：`已完成` / `进行中` / `规划中`
+
+## 💻 技术栈（不用写代码）
+
+编辑 `content/skills.md` 文件即可修改技术栈：
+
+```markdown
+---
+languages:
+  - name: Python
+    level: 5
+  - name: JavaScript
+    level: 4
+
+frameworks:
+  - name: PyTorch
+    level: 5
+  - name: React
+    level: 4
+---
+```
+
+`level` 范围 1-5，显示为进度条。
 
 ## 📄 论文笔记（不用写代码）
 

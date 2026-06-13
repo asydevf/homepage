@@ -1,0 +1,36 @@
+[
+  {
+    "title": "个人主页",
+    "url": "https://github.com/asydevf/homepage",
+    "description": "基于 Next.js 构建的个人主页，包含研究方向、技术栈、论文笔记等功能模块。",
+    "tags": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind"
+    ],
+    "status": "已完成",
+    "content": "<p>基于 Next.js 15 + Tailwind CSS + Framer Motion 构建的个人主页，支持 Markdown 内容管理。</p>\n"
+  },
+  {
+    "title": "论文复现 — InterGen",
+    "url": "https://github.com/asydevf",
+    "description": "复现交互感知动作生成论文，学习扩散模型在动作合成中的应用。",
+    "tags": [
+      "Diffusion",
+      "Motion",
+      "复现"
+    ],
+    "status": "进行中",
+    "content": "<p>复现 InterGen 论文的核心方法，理解交互条件编码器的设计思路。</p>\n"
+  },
+  {
+    "title": "更多项目待补充",
+    "url": "https://github.com/asydevf",
+    "description": "后续会在 GitHub 上开源更多研究相关代码和工具。",
+    "tags": [
+      "Coming Soon"
+    ],
+    "status": "规划中",
+    "content": ""
+  }
+]

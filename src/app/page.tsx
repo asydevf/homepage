@@ -1,9 +1,12 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { profile, type SkillItem, type Update } from "@/data/profile";
+import { profile, type SkillItem, type Update, type PaperContent } from "@/data/profile";
 import updates from "@/data/updates.json";
 import papersContent from "@/data/papers-content.json";
+import directions from "@/data/directions.json";
+import projectsContent from "@/data/projects-content.json";
+import skillsData from "@/data/skills.json";
 import { useMemo, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialIcon from "@/components/SocialIcon";
@@ -24,8 +27,8 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  // 项目数据直接使用，不再分组
-  const projects = profile.projects;
+  // 项目数据从 JSON 读取
+  const projects = projectsContent as { title: string; url: string; description: string; tags: string[]; status: string; content?: string }[];
 
   // 使用 useMemo 构造信息块，避免在 JSX 中直接书写复杂字面量
   const blocks = useMemo(
@@ -385,7 +388,7 @@ export default function Home() {
           >
             <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4">编程语言</h3>
             <div className="space-y-3">
-              {profile.languages.map((item) => (
+              {(skillsData.languages as SkillItem[]).map((item) => (
                 <SkillBar key={item.name} item={item} />
               ))}
             </div>
@@ -399,7 +402,7 @@ export default function Home() {
           >
             <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4">框架 & 工具</h3>
             <div className="space-y-3">
-              {profile.frameworksAndTools.map((item) => (
+              {(skillsData.frameworks as SkillItem[]).map((item) => (
                 <SkillBar key={item.name} item={item} />
               ))}
             </div>
@@ -627,7 +630,7 @@ const RESEARCH_DEFAULT_COUNT = 3;
 
 function ResearchDirectionsList() {
   const [showAll, setShowAll] = useState(false);
-  const all = profile.researchDirections;
+  const all = directions as { title: string; emoji?: string; keywords?: string[]; content: string }[];
   const displayed = showAll ? all : all.slice(0, RESEARCH_DEFAULT_COUNT);
   const hasMore = all.length > RESEARCH_DEFAULT_COUNT;
 
@@ -645,13 +648,18 @@ function ResearchDirectionsList() {
           >
             <div className="flex items-center gap-3 mb-3">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center text-lg">
-                {["🔬", "✍️", "🎨", "🧬", "📐", "🖥️"][idx % 6]}
+                {dir.emoji || "🔬"}
               </div>
               <h3 className="font-semibold text-zinc-800">{dir.title}</h3>
             </div>
-            <p className="text-sm text-zinc-600 leading-relaxed mb-4">{dir.description}</p>
+            {dir.content && (
+              <div
+                className="text-sm text-zinc-600 leading-relaxed mb-4 [&_p]:mb-2"
+                dangerouslySetInnerHTML={{ __html: dir.content }}
+              />
+            )}
             <div className="flex flex-wrap gap-1.5">
-              {dir.keywords.map((kw) => (
+              {(dir.keywords || []).map((kw) => (
                 <span key={kw} className="px-2 py-0.5 text-[11px] rounded-full bg-white/40 border border-white/50 text-zinc-600">
                   {kw}
                 </span>
@@ -733,8 +741,6 @@ function PapersList({ papers }: { papers: PaperContent[] }) {
  * @param paper - 论文数据
  * @param idx - 序号（用于动画延迟）
  */
-import type { PaperContent } from "@/data/profile";
-
 function PaperCard({ paper, idx }: { paper: PaperContent; idx: number }) {
   const [expanded, setExpanded] = useState(false);
 

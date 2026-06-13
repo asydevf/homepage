@@ -1,11 +1,11 @@
 /**
  * 构建脚本：将 content/ 下的 .md 文件解析为 JSON
  * 在 `npm run build` 时自动生成：
- *   - src/data/updates.json  (研究日志)
- *   - src/data/papers-content.json  (论文笔记)
- *
- * 使用方法：
- *   node scripts/build-updates.js
+ *   - src/data/updates.json          (研究日志)
+ *   - src/data/papers-content.json   (论文笔记)
+ *   - src/data/directions.json       (研究方向)
+ *   - src/data/projects-content.json (项目)
+ *   - src/data/skills.json           (技术栈)
  */
 
 const fs = require("fs");
@@ -16,13 +16,12 @@ const { marked } = require("marked");
 const CONTENT_DIR = path.join(__dirname, "..", "content");
 const DATA_DIR = path.join(__dirname, "..", "src", "data");
 
-// 确保输出目录存在
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
 /**
- * 读取指定目录下的所有 .md 文件并解析
+ * 读取目录下的所有 .md 文件并解析
  */
 function parseMarkdownDir(dirPath, requiredFields) {
   if (!fs.existsSync(dirPath)) return [];
@@ -38,20 +37,48 @@ function parseMarkdownDir(dirPath, requiredFields) {
           return null;
         }
       }
-      return { ...data, content: marked.parse(content) };
+      const html = content.trim() ? marked.parse(content) : "";
+      return { ...data, content: html };
     })
     .filter(Boolean);
 }
 
+function writeJSON(filename, data) {
+  fs.writeFileSync(path.join(DATA_DIR, filename), JSON.stringify(data, null, 2), "utf-8");
+}
+
 // === 研究日志 ===
-const updatesDir = path.join(CONTENT_DIR, "updates");
-const updates = parseMarkdownDir(updatesDir, ["title", "date"])
+const updates = parseMarkdownDir(path.join(CONTENT_DIR, "updates"), ["title", "date"])
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-fs.writeFileSync(path.join(DATA_DIR, "updates.json"), JSON.stringify(updates, null, 2), "utf-8");
-console.log(`✅ 研究日志：${updates.length} 条 → src/data/updates.json`);
+writeJSON("updates.json", updates);
+console.log(`✅ 研究日志：${updates.length} 条`);
 
 // === 论文笔记 ===
-const papersDir = path.join(CONTENT_DIR, "papers");
-const papers = parseMarkdownDir(papersDir, ["title"]);
-fs.writeFileSync(path.join(DATA_DIR, "papers-content.json"), JSON.stringify(papers, null, 2), "utf-8");
-console.log(`✅ 论文笔记：${papers.length} 篇 → src/data/papers-content.json`);
+const papers = parseMarkdownDir(path.join(CONTENT_DIR, "papers"), ["title"]);
+writeJSON("papers-content.json", papers);
+console.log(`✅ 论文笔记：${papers.length} 篇`);
+
+// === 研究方向 ===
+const directions = parseMarkdownDir(path.join(CONTENT_DIR, "directions"), ["title"]);
+writeJSON("directions.json", directions);
+console.log(`✅ 研究方向：${directions.length} 个`);
+
+// === 项目 ===
+const projects = parseMarkdownDir(path.join(CONTENT_DIR, "projects"), ["title"]);
+writeJSON("projects-content.json", projects);
+console.log(`✅ 项目：${projects.length} 个`);
+
+// === 技术栈 ===
+const skillsPath = path.join(CONTENT_DIR, "skills.md");
+if (fs.existsSync(skillsPath)) {
+  const raw = fs.readFileSync(skillsPath, "utf-8");
+  const { data } = matter(raw);
+  writeJSON("skills.json", {
+    languages: data.languages || [],
+    frameworks: data.frameworks || [],
+  });
+  console.log(`✅ 技术栈：${(data.languages || []).length} 语言 + ${(data.frameworks || []).length} 框架`);
+} else {
+  writeJSON("skills.json", { languages: [], frameworks: [] });
+  console.log("⚠️  content/skills.md 不存在，技术栈为空");
+}
