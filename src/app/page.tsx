@@ -436,11 +436,7 @@ export default function Home() {
       {/* 论文阅读 */}
       <section id="papers" className="mx-auto max-w-6xl px-6 pb-16 scroll-mt-24">
         <SectionTitle title="论文阅读" subtitle="论文笔记、阅读进度与复现情况" />
-        <div className="space-y-4">
-          {(papersContent as PaperContent[]).map((paper, idx) => (
-            <PaperCard key={paper.title} paper={paper} idx={idx} />
-          ))}
-        </div>
+        <PapersList papers={papersContent as PaperContent[]} />
       </section>
 
       {/* 研究日志 */}
@@ -647,6 +643,49 @@ function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) 
       </h2>
       <p className="text-zinc-500 text-sm md:text-base">{subtitle}</p>
     </motion.div>
+  );
+}
+
+/**
+ * 论文列表组件（默认显示前 3 篇，可展开全部）
+ * @param papers - 论文数据数组
+ */
+const PAPERS_DEFAULT_COUNT = 3;
+
+function PapersList({ papers }: { papers: PaperContent[] }) {
+  const [showAll, setShowAll] = useState(false);
+  const displayed = showAll ? papers : papers.slice(0, PAPERS_DEFAULT_COUNT);
+  const hasMore = papers.length > PAPERS_DEFAULT_COUNT;
+
+  return (
+    <div>
+      <div className="space-y-4">
+        {displayed.map((paper, idx) => (
+          <PaperCard key={paper.title} paper={paper} idx={idx} />
+        ))}
+      </div>
+      {hasMore && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mt-6"
+        >
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/40 border border-white/50 text-sm text-zinc-600 hover:bg-white/60 hover:text-zinc-800 transition-all"
+          >
+            {showAll ? "收起" : `查看全部 ${papers.length} 篇`}
+            <svg
+              className={`w-3.5 h-3.5 transition-transform ${showAll ? "rotate-180" : ""}`}
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+            >
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+        </motion.div>
+      )}
+    </div>
   );
 }
 
