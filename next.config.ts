@@ -2,9 +2,9 @@ import type { NextConfig } from "next";
 
 /**
  * Next.js 配置文件
- * 功能：配置图片域名白名单等设置
+ * 功能：配置图片域名白名单、安全响应头等设置
  */
-const nextConfig = {
+const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
@@ -12,6 +12,19 @@ const nextConfig = {
         hostname: "image.qqhkx.com",
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+        ],
+      },
+    ];
   },
 };
 

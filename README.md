@@ -1,342 +1,80 @@
-# QQHKX 个人主页
+# maomao 的个人主页
 
-[English](./README.en.md) | 中文
+基于 Next.js 15 构建的个人主页，展示研究方向、技术栈、项目和论文笔记。
 
-这是一个基于 [Next.js](https://nextjs.org) 构建的现代化个人主页项目，追求优美的视觉与交互体验。项目采用环境变量配置，支持快速定制，无需修改代码即可打造属于你的个人页面。
+🔗 **在线访问**：[maomao-home.vercel.app](https://maomao-home.vercel.app)
 
-![项目预览](./example.png)
+## 特性
 
-## ✨ 特性
+- 🎨 拟物风格卡片 + 动态光球背景
+- 🎭 Framer Motion 流畅动画（打字机、视差、入场效果）
+- 📱 响应式设计，适配桌面和移动端
+- ⚡ Next.js 15 App Router + Tailwind CSS
+- 🔒 安全响应头 + URL 协议校验
+- 🚀 Vercel 一键部署，GitHub 推送自动更新
 
-- 🎨 **现代化设计**：渐变背景、拟物风格卡片、动态光效
-- 🎭 **流畅动画**：基于 Framer Motion 的 Spring 动画系统
-- 📱 **响应式设计**：完美适配桌面、平板和移动设备
-- ⚡ **Next.js 15**：最新版本，支持 App Router 和 Turbopack
-- 🎯 **环境变量配置**：零代码修改，纯配置驱动
-- 🚀 **一键部署**：完美支持 Vercel 部署
+## 技术栈
 
-## 🚀 支持的功能
+| 类别 | 技术 |
+|------|------|
+| 框架 | Next.js 15, React 19 |
+| 样式 | Tailwind CSS 4 |
+| 动画 | Framer Motion |
+| 语言 | TypeScript |
+| 部署 | Vercel |
 
-- 📋 个人信息展示 ：头像、姓名、座右铭、地理位置、职业角色、个人简介
-- 🔗 社交媒体集成 ：GitHub、QQ、哔哩哔哩、个人博客等，支持自定义平台
-- 💻 技能展示 ：编程语言、框架工具，动态彩色标签
-- 🎨 项目作品集 ：精美项目卡片，支持描述、技术标签和外链
-- 🎭 动画与交互 ：入场动画、滚动视差、打字机效果等
-- 📱 响应式设计 ：移动端优化，触摸友好
-- 🔍 SEO 与性能 ：元数据优化、图片优化、代码分割
-## 🔧 环境变量配置
-
-本项目的核心优势在于**零代码配置**，所有个人信息都通过环境变量管理，让你专注于内容而非代码。
-
-### 快速配置
-
-1. **复制环境变量模板**
-   ```bash
-   cp .env.example .env.local
-   ```
-
-2. **编辑配置文件**
-   ```bash
-   # 使用你喜欢的编辑器打开
-   code .env.local
-   # 或者
-   notepad .env.local
-   ```
-
-3. **重启开发服务器**
-   ```bash
-   npm run dev
-   ```
-
-### 主要配置项
-
-#### 🌐 网站基本信息
-| 配置项 | 说明 | 示例 |
-|--------|------|------|
-| `NEXT_PUBLIC_SITE_TITLE` | 网站标题 | `QQHKX \| 个人主页` |
-| `NEXT_PUBLIC_SITE_DESCRIPTION` | 网站描述 | `QQHKX 的个人主页与项目展示` |
-| `NEXT_PUBLIC_SITE_URL` | 网站URL | `https://qqhkx.com` |
-| `NEXT_PUBLIC_SITE_NAME` | 网站名称（页面显示） | `qqhkx` |
-| `NEXT_PUBLIC_SITE_DOMAIN` | 网站域名后缀 | `.com` |
-
-#### 👤 个人信息配置
-| 配置项 | 说明 | 示例 |
-|--------|------|------|
-| `NEXT_PUBLIC_PROFILE_NAME` | 你的姓名 | `qqhkx.com` |
-| `NEXT_PUBLIC_PROFILE_MOTTO` | 个人座右铭 | `心有阳光，万物可爱` |
-| `NEXT_PUBLIC_PROFILE_LOCATION` | 所在地区 | `中国·成都` |
-| `NEXT_PUBLIC_PROFILE_ROLE` | 职业角色 | `高中生` |
-| `NEXT_PUBLIC_PROFILE_AVATAR` | 头像链接 | `https://image.qqhkx.com/avatar.jpg` |
-| `NEXT_PUBLIC_PROFILE_DESCRIPTION` | 个人简介 | 支持 `{location}` 和 `{role}` 模板变量 |
-| `NEXT_PUBLIC_PROFILE_AVATAR_ALT` | 头像alt文本 | `{name} avatar`（支持模板变量） |
-
-#### 🔗 社交与技能配置
-| 配置项 | 说明 | 示例 |
-|--------|------|------|
-| `NEXT_PUBLIC_SOCIALS` | 社交链接 | JSON 格式数组 |
-| `NEXT_PUBLIC_LANGUAGES` | 编程语言 | 逗号分隔的字符串 |
-| `NEXT_PUBLIC_FRAMEWORKS_AND_TOOLS` | 框架与工具 | 逗号分隔的字符串 |
-| `NEXT_PUBLIC_PROJECTS` | 项目展示 | JSON 格式数组 |
-
-#### 🖼️ 图片与资源配置
-| 配置项 | 说明 | 示例 |
-|--------|------|------|
-| `NEXT_PUBLIC_IMAGE_HOSTNAME` | 图片域名 | `image.qqhkx.com` |
-| `NEXT_PUBLIC_FAVICON_PATH` | 网站图标 | `https://image.qqhkx.com/favicon.ico` |
-| `NEXT_PUBLIC_ICP_NUMBER` | ICP备案号 | `蜀ICP备2024089469号-1` |
-
-📖 **详细配置指南**：[CONFIG_GUIDE.md](./CONFIG_GUIDE.md) | [ENV_CONFIG.md](./ENV_CONFIG.md)
-
-### 配置技巧
-
-- 🖼️ **头像建议**：使用正方形图片，推荐尺寸 400x400 以上
-- 🔗 **社交链接**：支持 GitHub、Bilibili、Blog、QQ 等平台自动图标匹配
-- 🎨 **图标自定义**：可在 `src/components/SocialIcon.tsx` 中添加新平台图标
-- 📱 **响应式测试**：配置完成后记得在不同设备尺寸下测试效果
-
-## 🚀 快速开始
-
-1. **克隆项目**
-   ```bash
-   git clone https://github.com/asydevf/qqhkx-homepage.git
-   cd qqhkx-homepage
-   ```
-
-2. **安装依赖**
-   ```bash
-   npm install
-   ```
-
-3. **配置环境变量**
-   ```bash
-   cp .env.example .env.local
-   # 编辑 .env.local 文件，填入你的个人信息
-   ```
-   
-   💡 **首次配置？** 查看 [配置指南](./CONFIG_GUIDE.md) 获取详细说明和示例
-
-4. **启动开发服务器**
-   ```bash
-   npm run dev
-   ```
-
-5. **访问应用**
-   
-   打开 [http://localhost:3000](http://localhost:3000) 查看结果。
-
-## 📁 项目结构
-
-```
-qqhkx-homepage/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── favicon.ico         # 网站图标
-│   │   ├── globals.css         # 全局样式
-│   │   ├── layout.tsx          # 根布局组件
-│   │   └── page.tsx            # 首页组件
-│   ├── components/             # React 组件
-│   │   └── SocialIcon.tsx      # 社交媒体图标组件
-│   └── data/                   # 数据配置
-│       └── profile.ts          # 个人信息配置（默认值）
-├── public/                     # 静态资源
-│   ├── icon/                   # 社交媒体图标
-│   │   ├── github.svg          # GitHub 图标
-│   │   ├── bilibili.svg        # Bilibili 图标
-│   │   ├── blog.svg            # 博客图标
-│   │   └── QQ.svg              # QQ 图标
-│   └── font/                   # 本地字体
-│       └── Pacifico-Regular-all.ttf  # 标题字体
-├── .env.example                # 环境变量模板
-├── .env.local                  # 本地环境变量（需自行创建）
-├── ENV_CONFIG.md               # 环境变量配置指南
-├── next.config.ts              # Next.js 配置
-├── tailwind.config.ts          # Tailwind CSS 配置
-└── tsconfig.json               # TypeScript 配置
-```
-
-### 核心文件说明
-
-- **`src/app/page.tsx`**：主页面组件，包含 Hero、关于、技能、项目等区域
-- **`src/components/SocialIcon.tsx`**：社交媒体图标组件，支持多平台自动匹配
-- **`src/data/profile.ts`**：个人信息默认配置，环境变量优先级更高
-- **`.env.local`**：本地环境变量，覆盖默认配置
-
-
-
-## 🎨 自定义开发
-
-### 添加新的社交平台
-
-1. **添加图标文件**
-   ```bash
-   # 将 SVG 图标放入 public/icon/ 目录
-   public/icon/your-platform.svg
-   ```
-
-2. **更新 SocialIcon 组件**
-   ```typescript
-   // src/components/SocialIcon.tsx
-   const iconMap: Record<string, string> = {
-     // ... 现有图标
-     "YourPlatform": "/icon/your-platform.svg",
-   };
-   ```
-
-3. **在环境变量中使用**
-   ```bash
-   # .env.local
-   NEXT_PUBLIC_SOCIALS=[{"name":"YourPlatform","url":"https://your-platform.com/profile"}]
-   ```
-
-### 自定义样式
-
-- **修改主题色彩**：编辑 `tailwind.config.ts` 中的颜色配置
-- **调整动画效果**：在 `src/app/page.tsx` 中修改 Framer Motion 参数
-- **更换字体**：替换 `public/font/` 中的字体文件并更新 `src/app/layout.tsx`
-
-### 添加新页面
+## 本地开发
 
 ```bash
-# 创建新页面
-mkdir src/app/about
-touch src/app/about/page.tsx
+# 克隆
+git clone https://github.com/asydevf/homepage.git
+cd homepage
+
+# 安装依赖
+npm install
+
+# 配置环境变量
+cp .env.example .env.local
+# 编辑 .env.local 填入你的信息
+
+# 启动
+npm run dev
 ```
 
-### 性能优化建议
+访问 [http://localhost:3000](http://localhost:3000)
 
-- 🖼️ **图片优化**：使用 Next.js Image 组件，配置 `remotePatterns`
-- 🎭 **动画性能**：避免同时运行过多复杂动画
-- 📱 **移动端适配**：使用 Tailwind 的响应式前缀测试各种屏幕尺寸
-- ⚡ **构建优化**：运行 `npm run build` 检查包大小和性能指标
+## 项目结构
 
-## 📦 构建与部署
+```
+src/
+├── app/
+│   ├── page.tsx          # 主页（Hero + 各板块）
+│   ├── layout.tsx        # 根布局 + 字体配置
+│   └── globals.css       # 全局样式 + 拟物卡片
+├── components/
+│   ├── MouseTrackingOrbs.tsx  # 鼠标跟踪光球
+│   └── SocialIcon.tsx         # 社交平台图标
+└── data/
+    └── profile.ts        # 个人信息 + 项目 + 论文数据
+```
 
-### 本地构建测试
+## 配置
+
+所有个人信息通过 `.env.local` 配置，详见 [.env.example](.env.example)。
+
+关键配置项：
+- `NEXT_PUBLIC_SITE_NAME` — 网站名称
+- `NEXT_PUBLIC_PROFILE_MOTTO` — 座右铭（打字机效果）
+- `NEXT_PUBLIC_SOCIALS` — 社交链接（JSON）
+
+## 部署
+
+推送到 GitHub 后，[Vercel](https://vercel.com) 自动部署：
 
 ```bash
-# 构建生产版本
-npm run build
-
-# 启动生产服务器
-npm start
-
-# 或者使用 serve 静态托管
-npx serve@latest out
+git push origin main
 ```
 
-### 部署到 Vercel（推荐）
+## License
 
-#### 方式一：一键部署
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/asydevf/qqhkx-homepage)
-
-#### 方式二：GitHub 集成
-1. Fork 本仓库到你的 GitHub
-2. 在 [Vercel](https://vercel.com) 中导入你的仓库
-3. 配置环境变量（见下方说明）
-4. 点击部署
-
-#### 方式三：CLI 部署
-```bash
-# 安装 Vercel CLI
-npm i -g vercel
-
-# 登录 Vercel
-vercel login
-
-# 部署项目
-vercel
-
-# 部署到生产环境
-vercel --prod
-```
-
-### 环境变量配置
-
-在 Vercel 控制台配置环境变量：
-
-1. 进入项目 Dashboard
-2. 点击 **Settings** > **Environment Variables**
-3. 添加所需的环境变量（详细配置项请参考上方的[主要配置项](#主要配置项)部分）
-
-### 其他部署平台
-
-#### Netlify
-```bash
-# 构建命令
-npm run build
-
-# 发布目录
-out
-```
-
-#### GitHub Pages
-```bash
-# 安装 gh-pages
-npm install --save-dev gh-pages
-
-# 添加部署脚本到 package.json
-"scripts": {
-  "deploy": "gh-pages -d out"
-}
-
-# 部署
-npm run build && npm run deploy
-```
-
-### 故障排除
-
-#### 常见问题
-
-1. **构建失败**
-   ```bash
-   # 清理缓存重新安装
-   rm -rf node_modules package-lock.json
-   npm install
-   ```
-
-2. **环境变量不生效**
-   - 确保变量名以 `NEXT_PUBLIC_` 开头
-   - 重启开发服务器
-   - 检查 `.env.local` 文件格式
-
-3. **图片加载失败**
-   - 检查 `next.config.ts` 中的 `remotePatterns` 配置
-   - 确保图片 URL 可访问
-
-4. **字体加载问题**
-   - 确保字体文件在 `public/font/` 目录中
-   - 检查 `layout.tsx` 中的字体配置
-
-#### 性能检查
-
-```bash
-# 分析包大小
-npm run build
-npx @next/bundle-analyzer
-
-# Lighthouse 性能测试
-npx lighthouse http://localhost:3000
-```
-
-## 📚 相关资源
-
-- [Next.js 文档](https://nextjs.org/docs) - 了解 Next.js 功能和 API
-- [Tailwind CSS 文档](https://tailwindcss.com/docs) - CSS 框架文档
-- [Framer Motion 文档](https://www.framer.com/motion/) - 动画库文档
-- [Vercel 部署文档](https://vercel.com/docs) - 部署平台文档
-
-## 📈 Star 历史
-
-[![Star History Chart](https://api.star-history.com/svg?repos=qqhkx/qqhkx-homepage&type=Date)](https://star-history.com/#qqhkx/qqhkx-homepage&Date)
-
-## 🤝 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
-## 📄 许可证
-
-[MIT License](LICENSE)
-
----
-
-⭐ 如果这个项目对你有帮助，请给个 Star！
+[MIT](LICENSE)

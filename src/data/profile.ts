@@ -103,6 +103,20 @@ export type Profile = {
 };
 
 /**
+ * 校验 URL 协议是否安全（仅允许 https: 和 mailto:）
+ * @param url - 待校验的 URL 字符串
+ * @returns 是否合法
+ */
+function isSafeUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return ["https:", "mailto:"].includes(parsed.protocol);
+  } catch {
+    return false;
+  }
+}
+
+/**
  * 从环境变量安全解析JSON字符串
  * @param envVar - 环境变量值
  * @param fallback - 解析失败时的默认值
@@ -127,7 +141,7 @@ const baseProfile = {
   role: process.env.NEXT_PUBLIC_PROFILE_ROLE || "",
   avatar: "/image/avatar.png",
   icpNumber: process.env.NEXT_PUBLIC_ICP_NUMBER || undefined,
-  socials: parseEnvJSON<SocialLink[]>(process.env.NEXT_PUBLIC_SOCIALS, []),
+  socials: parseEnvJSON<SocialLink[]>(process.env.NEXT_PUBLIC_SOCIALS, []).filter(s => isSafeUrl(s.url)),
   interests: [
     "人机交互",
     "动作生成",
@@ -173,24 +187,24 @@ const baseProfile = {
   ],
   projects: [
     {
-      title: "InterGen",
-      description: "基于扩散模型的交互感知人体动作生成，支持多人交互动作合成。",
-      tags: ["Diffusion", "Motion", "Interaction"],
-      url: "https://github.com/tr3e/InterGen",
+      title: "个人主页",
+      description: "基于 Next.js 构建的个人主页，包含研究方向、技术栈、论文笔记等功能模块。",
+      tags: ["Next.js", "TypeScript", "Tailwind"],
+      url: "https://github.com/asydevf/homepage",
       status: "已完成" as const,
     },
     {
-      title: "HumanMAC",
-      description: "多智能体人体交互动作生成框架，基于 Transformer 架构。",
-      tags: ["Transformer", "Motion", "Multi-Agent"],
-      url: "#",
+      title: "论文复现 — InterGen",
+      description: "复现交互感知动作生成论文，学习扩散模型在动作合成中的应用。",
+      tags: ["Diffusion", "Motion", "复现"],
+      url: "https://github.com/asydevf",
       status: "进行中" as const,
     },
     {
-      title: "MotionDiffuse",
-      description: "文本驱动的人体动作合成系统，将自然语言映射为连续动作序列。",
-      tags: ["Diffusion", "Text2Motion", "NLP"],
-      url: "#",
+      title: "更多项目待补充",
+      description: "后续会在 GitHub 上开源更多研究相关代码和工具。",
+      tags: ["Coming Soon"],
+      url: "https://github.com/asydevf",
       status: "规划中" as const,
     },
   ],
