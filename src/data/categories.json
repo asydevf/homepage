@@ -1,0 +1,27 @@
+[
+  {
+    "id": "arxiv",
+    "name": "arXiv 预印本",
+    "emoji": "📄"
+  },
+  {
+    "id": "conference",
+    "name": "会议论文",
+    "emoji": "🎤"
+  },
+  {
+    "id": "journal",
+    "name": "期刊论文",
+    "emoji": "📰"
+  },
+  {
+    "id": "book",
+    "name": "书籍",
+    "emoji": "📖"
+  },
+  {
+    "id": "other",
+    "name": "其他",
+    "emoji": "📁"
+  }
+]

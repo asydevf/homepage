@@ -1,19 +1,29 @@
 [
   {
-    "title": "HumanMAC: Masked Motion Completion for Human Motion Prediction",
-    "authors": "Chen et al.",
-    "venue": "ICCV 2023",
-    "year": 2023,
-    "arxiv": "https://arxiv.org/abs/2303.14937",
-    "progress": 40,
-    "status": "已读",
-    "repo": "",
-    "tags": [
-      "Transformer",
-      "Motion",
-      "Prediction"
-    ],
-    "content": "<h2>论文概述</h2>\n<p>将掩码补全（masked completion）范式引入人体动作预测，类似于 BERT 在 NLP 中的做法。随机遮盖动作帧，训练模型补全缺失部分。</p>\n<h2>核心方法</h2>\n<ul>\n<li>动作序列 token 化</li>\n<li>掩码训练策略：随机遮盖不同比例的帧</li>\n<li>Transformer 编码器-解码器架构</li>\n</ul>\n<h2>阅读笔记</h2>\n<p>掩码补全的思路很优雅，把动作预测转化为了一个自监督学习问题。但对长序列的预测效果还有待提升，超过 2 秒的动作质量下降明显。</p>\n"
+    "title": "Hierarchical image understanding and diffusion-enhanced generative prompting for human-object interaction detection",
+    "authors": "An Pinzhu, Tan Zhi",
+    "venue": "Expert Systems with Applications",
+    "year": 3,
+    "progress": 0,
+    "status": "待读",
+    "tags": [],
+    "content": "<h2>阅读笔记</h2>\n<p>（待补充）</p>\n",
+    "doi": "10.1016/j.eswa.2025.129988",
+    "url": "https://linkinghub.elsevier.com/retrieve/pii/S0957417425036036",
+    "category": "期刊论文"
+  },
+  {
+    "title": "Image fusion in the loop of high-level vision tasks: A semantic-aware real-time infrared and visible image fusion network",
+    "authors": "Tang Linfeng, Yuan Jiteng, Ma Jiayi",
+    "venue": "Information Fusion",
+    "year": 6,
+    "progress": 0,
+    "status": "待读",
+    "tags": [],
+    "content": "<h2>阅读笔记</h2>\n<p>（待补充）</p>\n",
+    "doi": "10.1016/j.inffus.2021.12.004",
+    "url": "https://linkinghub.elsevier.com/retrieve/pii/S1566253521002542",
+    "category": "期刊论文"
   },
   {
     "title": "InterGen: Interaction-aware Human Motion Generation via Diffusion",
@@ -29,7 +39,36 @@
       "Motion",
       "Interaction"
     ],
-    "content": "<h2>论文概述</h2>\n<p>提出了一种交互感知的人体动作生成方法，通过扩散模型建模多人之间的物理互动关系。核心思路是将交互条件注入扩散过程，让模型学会生成协调的双人动作。</p>\n<h2>核心方法</h2>\n<ul>\n<li>基于 DDPM 的动作生成框架</li>\n<li>交互条件编码器：捕捉两人之间的相对位置和动作关系</li>\n<li>分阶段训练：先学单人动作，再学交互模式</li>\n</ul>\n<h2>阅读笔记</h2>\n<p>关键创新点在于交互表示的设计——不是简单拼接两人动作，而是用相对位姿和接触点来编码交互关系。这比直接 concatenation 效果好很多。</p>\n<h2>复现进展</h2>\n<ul>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> 读完论文，理解核心方法</li>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> 跑通官方代码 demo</li>\n<li><input disabled=\"\" type=\"checkbox\"> 在新数据集上训练</li>\n<li><input disabled=\"\" type=\"checkbox\"> 对比实验</li>\n</ul>\n"
+    "content": "<h2>论文概述</h2>\n<p>提出了一种交互感知的人体动作生成方法，通过扩散模型建模多人之间的物理互动关系。核心思路是将交互条件注入扩散过程，让模型学会生成协调的双人动作。</p>\n<h2>核心方法</h2>\n<ul>\n<li>基于 DDPM 的动作生成框架</li>\n<li>交互条件编码器：捕捉两人之间的相对位置和动作关系</li>\n<li>分阶段训练：先学单人动作，再学交互模式</li>\n</ul>\n<h2>阅读笔记</h2>\n<p>关键创新点在于交互表示的设计——不是简单拼接两人动作，而是用相对位姿和接触点来编码交互关系。这比直接 concatenation 效果好很多。</p>\n<h2>复现进展</h2>\n<ul>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> 读完论文，理解核心方法</li>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> 跑通官方代码 demo</li>\n<li><input disabled=\"\" type=\"checkbox\"> 在新数据集上训练</li>\n<li><input disabled=\"\" type=\"checkbox\"> 对比实验</li>\n</ul>\n",
+    "category": "arXiv 预印本"
+  },
+  {
+    "title": "InterMask: 3D Human Interaction Generation via Collaborative Masked Modeling",
+    "authors": "Javed Muhammad Gohar, Guo Chuan, Cheng Li, Li Xingyu",
+    "year": 2025,
+    "arxiv": "https://arxiv.org/abs/2410.10010",
+    "progress": 0,
+    "status": "待读",
+    "tags": [],
+    "content": "<h2>阅读笔记</h2>\n<p>（待补充）</p>\n",
+    "arxivId": "2410.10010",
+    "doi": "10.48550/arXiv.2410.10010",
+    "url": "http://arxiv.org/abs/2410.10010",
+    "category": "arXiv 预印本"
+  },
+  {
+    "title": "Human Motion Diffusion Model",
+    "arxiv": "https://arxiv.org/abs/2209.14916",
+    "progress": 30,
+    "status": "待读",
+    "tags": [
+      "Diffusion",
+      "Motion"
+    ],
+    "content": "<h2>阅读笔记</h2>\n<p>（待补充）</p>\n<blockquote>\n<p>💡 这篇论文使用了简化格式：frontmatter 中只填写了 arXiv ID，\ntitle/authors/venue/year 会在构建时自动从 arXiv API 获取。\n如果配置了 Zotero，还会自动匹配 Zotero 文献库中的信息。</p>\n</blockquote>\n",
+    "authors": "Guy Tevet, Sigal Raab, Brian Gordon, Yonatan Shafir, Daniel Cohen-Or, Amit H. Bermano",
+    "year": 2022,
+    "category": "arXiv 预印本"
   },
   {
     "title": "MotionDiffuse: Text-Driven Human Motion Generation with Diffusion",
@@ -44,6 +83,20 @@
       "Diffusion",
       "Text2Motion"
     ],
-    "content": "<h2>论文概述</h2>\n<p>首个将扩散模型应用于文本驱动动作生成的工作。将自然语言描述映射为连续的人体动作序列，实现了从文本到动作的端到端生成。</p>\n<h2>核心方法</h2>\n<ul>\n<li>文本编码器提取语义特征</li>\n<li>扩散模型在动作空间中逐步去噪</li>\n<li>分层控制：全局动作 + 局部细节</li>\n</ul>\n<h2>阅读笔记</h2>\n<p>Text2Motion 的 baseline，后续很多工作都基于这个框架扩展。扩散模型在动作空间的效果比 GAN 更稳定，但推理速度较慢是主要瓶颈。</p>\n<h2>复现进展</h2>\n<ul>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> 读完论文</li>\n<li><input disabled=\"\" type=\"checkbox\"> 跑通代码</li>\n<li><input disabled=\"\" type=\"checkbox\"> 尝试用自己的文本输入测试</li>\n</ul>\n"
+    "content": "<h2>论文概述</h2>\n<p>首个将扩散模型应用于文本驱动动作生成的工作。将自然语言描述映射为连续的人体动作序列，实现了从文本到动作的端到端生成。</p>\n<h2>核心方法</h2>\n<ul>\n<li>文本编码器提取语义特征</li>\n<li>扩散模型在动作空间中逐步去噪</li>\n<li>分层控制：全局动作 + 局部细节</li>\n</ul>\n<h2>阅读笔记</h2>\n<p>Text2Motion 的 baseline，后续很多工作都基于这个框架扩展。扩散模型在动作空间的效果比 GAN 更稳定，但推理速度较慢是主要瓶颈。</p>\n<h2>复现进展</h2>\n<ul>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> 读完论文</li>\n<li><input disabled=\"\" type=\"checkbox\"> 跑通代码</li>\n<li><input disabled=\"\" type=\"checkbox\"> 尝试用自己的文本输入测试</li>\n</ul>\n",
+    "category": "arXiv 预印本"
+  },
+  {
+    "title": "Physics-guided human interaction generation via motion diffusion model",
+    "authors": "Gao Dahua, Wang Wenlong, Liu Xinyu, Hu Yuxi, Liu Danhua",
+    "venue": "Computer Vision and Image Understanding",
+    "year": 10,
+    "progress": 0,
+    "status": "待读",
+    "tags": [],
+    "content": "<h2>阅读笔记</h2>\n<p>（待补充）</p>\n",
+    "doi": "10.1016/j.cviu.2025.104470",
+    "url": "https://linkinghub.elsevier.com/retrieve/pii/S1077314225001936",
+    "category": "期刊论文"
   }
 ]

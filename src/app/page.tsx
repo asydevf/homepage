@@ -7,10 +7,12 @@ import papersContent from "@/data/papers-content.json";
 import directions from "@/data/directions.json";
 import projectsContent from "@/data/projects-content.json";
 import skillsData from "@/data/skills.json";
-import { useMemo, useEffect, useState } from "react";
+import categoriesData from "@/data/categories.json";
+import { useMemo, useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialIcon from "@/components/SocialIcon";
 import MouseTrackingOrbs from "@/components/MouseTrackingOrbs";
+import SearchInput, { HighlightText } from "@/components/SearchInput";
 
 /**
  * Home 页面组件
@@ -44,7 +46,7 @@ export default function Home() {
               {profile.interests.map((interest) => (
                 <span
                   key={interest}
-                  className="px-3 py-1 rounded-full text-xs bg-gradient-to-r from-purple-100/60 to-pink-100/60 border border-purple-200/40 text-purple-700"
+                  className="chip-ios px-3 py-1 text-xs text-purple-700"
                 >
                   {interest}
                 </span>
@@ -155,16 +157,16 @@ export default function Home() {
                   }}
                   className="flex flex-wrap items-center gap-3 mb-8 text-xs md:text-sm text-zinc-600"
                 >
-                  <span className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/40 backdrop-blur-sm border border-white/50 hover:bg-white/60 transition-colors">
+                  <span className="chip-ios px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm text-zinc-600">
                     {profile.role}
                   </span>
-                  <span className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/40 backdrop-blur-sm border border-white/50 hover:bg-white/60 transition-colors">
+                  <span className="chip-ios px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm text-zinc-600">
                     {profile.location}
                   </span>
                   {profile.interests.slice(0, 2).map((interest) => (
                     <span
                       key={interest}
-                      className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/40 backdrop-blur-sm border border-white/50 hover:bg-white/60 transition-colors"
+                      className="chip-ios px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm text-zinc-600"
                     >
                       {interest}
                     </span>
@@ -208,7 +210,7 @@ export default function Home() {
                     >
                       <Link
                         href={s.url}
-                        className="relative card-skeu texture-spot flex items-center gap-2 text-sm md:text-base lg:text-lg px-4 py-2 md:px-5 md:py-2.5 lg:px-6 lg:py-3 rounded-[20px] hover:opacity-95 transition group"
+                        className="relative btn-ios-pill text-sm md:text-base lg:text-lg px-4 py-2 md:px-5 md:py-2.5 lg:px-6 lg:py-3 group"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -340,7 +342,7 @@ export default function Home() {
                   </p>
                   <div className="flex flex-wrap gap-2 mb-3">
                     {project.tags.map((tag) => (
-                      <span key={tag} className="px-2.5 py-1 text-xs rounded-full bg-white/40 border border-white/50 text-zinc-700 backdrop-blur-sm transition-all duration-200 hover:bg-white/15 hover:border-white/30 hover:text-zinc-800">
+                      <span key={tag} className="chip-ios px-2.5 py-1 text-xs text-zinc-700">
                         {tag}
                       </span>
                     ))}
@@ -364,7 +366,7 @@ export default function Home() {
             href="https://github.com/asydevf"
             target="_blank"
                         rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-white/50 backdrop-blur-sm hover:from-blue-500/30 hover:to-purple-500/30 hover:border-white/30 transition-all duration-300 group"
+            className="btn-ios-tint px-8 py-4 text-base group"
           >
             <span className="text-zinc-800 font-medium">查看更多项目</span>
             <svg className="w-5 h-5 text-zinc-500 group-hover:text-zinc-700 group-hover:translate-x-1 transition-all duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -449,7 +451,7 @@ export default function Home() {
                   )}
                   <div className="flex flex-wrap gap-1.5 ml-auto">
                     {entry.tags.map((tag) => (
-                      <span key={tag} className="px-2 py-0.5 text-[10px] rounded-full bg-white/40 border border-white/50 text-zinc-500">
+                      <span key={tag} className="chip-ios px-2 py-0.5 text-[10px] text-zinc-500">
                         {tag}
                       </span>
                     ))}
@@ -660,7 +662,7 @@ function ResearchDirectionsList() {
             )}
             <div className="flex flex-wrap gap-1.5">
               {(dir.keywords || []).map((kw) => (
-                <span key={kw} className="px-2 py-0.5 text-[11px] rounded-full bg-white/40 border border-white/50 text-zinc-600">
+                <span key={kw} className="chip-ios px-2 py-0.5 text-[11px] text-zinc-600">
                   {kw}
                 </span>
               ))}
@@ -677,7 +679,7 @@ function ResearchDirectionsList() {
         >
           <button
             onClick={() => setShowAll(!showAll)}
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/40 border border-white/50 text-sm text-zinc-600 hover:bg-white/60 hover:text-zinc-800 transition-all"
+            className="btn-ios px-6 py-2.5 text-sm text-zinc-600 hover:text-zinc-800"
           >
             {showAll ? "收起" : `查看全部 ${all.length} 个方向`}
             <svg
@@ -694,43 +696,189 @@ function ResearchDirectionsList() {
 }
 
 /**
- * 论文列表组件（默认显示前 3 篇，可展开全部）
+ * 论文列表组件（横向分类标签页 + 标签筛选）
  * @param papers - 论文数据数组
  */
-const PAPERS_DEFAULT_COUNT = 3;
-
 function PapersList({ papers }: { papers: PaperContent[] }) {
-  const [showAll, setShowAll] = useState(false);
-  const displayed = showAll ? papers : papers.slice(0, PAPERS_DEFAULT_COUNT);
-  const hasMore = papers.length > PAPERS_DEFAULT_COUNT;
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [activeCat, setActiveCat] = useState<string>("全部");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // 分类配置（名称 → emoji 映射）
+  const catConfig = useMemo(() => {
+    const map = new Map<string, string>();
+    (categoriesData as { id: string; name: string; emoji: string }[]).forEach(
+      (c) => map.set(c.name, c.emoji)
+    );
+    return map;
+  }, []);
+
+  // 提取所有标签
+  const allTags = useMemo(() => {
+    const tagSet = new Set<string>();
+    papers.forEach((p) => (p.tags || []).forEach((t) => tagSet.add(t)));
+    return Array.from(tagSet).sort();
+  }, [papers]);
+
+  // 提取所有分类
+  const allCats = useMemo(() => {
+    const catSet = new Set<string>();
+    papers.forEach((p) => catSet.add(p.category || "其他"));
+    return ["全部", ...Array.from(catSet)];
+  }, [papers]);
+
+  // 搜索过滤函数
+  const matchesSearch = useCallback(
+    (paper: PaperContent, query: string): boolean => {
+      if (!query) return true;
+      const lowerQuery = query.toLowerCase();
+
+      // 搜索标题
+      if (paper.title?.toLowerCase().includes(lowerQuery)) return true;
+
+      // 搜索作者
+      if (paper.authors?.toLowerCase().includes(lowerQuery)) return true;
+
+      // 搜索会议/期刊
+      if (paper.venue?.toLowerCase().includes(lowerQuery)) return true;
+
+      // 搜索标签
+      if (paper.tags?.some((tag) => tag.toLowerCase().includes(lowerQuery)))
+        return true;
+
+      // 搜索分类
+      if (paper.category?.toLowerCase().includes(lowerQuery)) return true;
+
+      // 搜索笔记内容（移除 HTML 标签后搜索）
+      if (paper.content) {
+        const textContent = paper.content.replace(/<[^>]*>/g, "");
+        if (textContent.toLowerCase().includes(lowerQuery)) return true;
+      }
+
+      return false;
+    },
+    []
+  );
+
+  // 按标签 + 分类 + 搜索筛选
+  const filtered = useMemo(() => {
+    return papers.filter((p) => {
+      const tagMatch = !activeTag || (p.tags || []).includes(activeTag);
+      const catMatch =
+        activeCat === "全部" || (p.category || "其他") === activeCat;
+      const searchMatch = matchesSearch(p, searchQuery);
+      return tagMatch && catMatch && searchMatch;
+    });
+  }, [papers, activeTag, activeCat, searchQuery, matchesSearch]);
 
   return (
     <div>
+      {/* 搜索输入框 */}
+      <SearchInput
+        resultCount={filtered.length}
+        totalCount={papers.length}
+        onSearch={setSearchQuery}
+      />
+
+      {/* 分类板块卡片（横向） */}
+      {allCats.length > 2 && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+          {allCats.map((cat, idx) => {
+            const count = cat === "全部"
+              ? papers.length
+              : papers.filter((p) => (p.category || "其他") === cat).length;
+            const isActive = activeCat === cat;
+            const emoji = cat === "全部" ? "📚" : (catConfig.get(cat) || "📁");
+            return (
+              <motion.button
+                key={cat}
+                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                whileInView={{ scale: 1, opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  type: "spring",
+                  stiffness: 120,
+                  damping: 20,
+                  delay: idx * 0.08,
+                }}
+                whileHover={{ scale: 1.04, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => setActiveCat(cat)}
+                className={`group relative card-skeu texture-spot p-5 text-left cursor-pointer transition-all duration-300 ${
+                  isActive
+                    ? "ring-2 ring-purple-300/60 border-purple-200/50"
+                    : "border-white/10 hover:border-white/50"
+                }`}
+              >
+                {/* 激活时的渐变背景 */}
+                {isActive && (
+                  <div className="absolute inset-0 rounded-[20px] bg-gradient-to-br from-purple-100/30 via-transparent to-pink-100/20 pointer-events-none" />
+                )}
+                {/* hover 渐变 */}
+                <div className="absolute inset-0 rounded-[20px] bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-2xl">{emoji}</span>
+                    <span className={`text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent transition-all ${
+                      isActive
+                        ? "from-purple-500 to-pink-500"
+                        : "from-zinc-400 to-zinc-400 group-hover:from-purple-400 group-hover:to-pink-400"
+                    }`}>
+                      {count}
+                    </span>
+                  </div>
+                  <h3 className={`font-medium text-sm transition-colors ${
+                    isActive ? "text-zinc-800" : "text-zinc-600 group-hover:text-zinc-800"
+                  }`}>
+                    {cat}
+                  </h3>
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* 标签筛选 */}
+      {allTags.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-6">
+          <button
+            onClick={() => setActiveTag(null)}
+            className={`chip-ios px-3 py-1 text-xs transition-colors ${
+              !activeTag
+                ? "bg-purple-100/60 border-purple-200/60 text-purple-700"
+                : "text-zinc-500"
+            }`}
+          >
+            全部标签
+          </button>
+          {allTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+              className={`chip-ios px-3 py-1 text-xs transition-colors ${
+                activeTag === tag
+                  ? "bg-purple-100/60 border-purple-200/60 text-purple-700"
+                  : "text-zinc-500"
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* 论文列表 */}
       <div className="space-y-4">
-        {displayed.map((paper, idx) => (
-          <PaperCard key={paper.title} paper={paper} idx={idx} />
+        {filtered.map((paper, idx) => (
+          <PaperCard key={paper.title} paper={paper} idx={idx} searchQuery={searchQuery} />
         ))}
       </div>
-      {hasMore && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mt-6"
-        >
-          <button
-            onClick={() => setShowAll(!showAll)}
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/40 border border-white/50 text-sm text-zinc-600 hover:bg-white/60 hover:text-zinc-800 transition-all"
-          >
-            {showAll ? "收起" : `查看全部 ${papers.length} 篇`}
-            <svg
-              className={`w-3.5 h-3.5 transition-transform ${showAll ? "rotate-180" : ""}`}
-              viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-            >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </button>
-        </motion.div>
+
+      {filtered.length === 0 && (
+        <p className="text-center text-zinc-400 text-sm py-8">
+          没有匹配的论文
+        </p>
       )}
     </div>
   );
@@ -740,8 +888,9 @@ function PapersList({ papers }: { papers: PaperContent[] }) {
  * 论文卡片组件（可展开）
  * @param paper - 论文数据
  * @param idx - 序号（用于动画延迟）
+ * @param searchQuery - 搜索关键词（用于高亮显示）
  */
-function PaperCard({ paper, idx }: { paper: PaperContent; idx: number }) {
+function PaperCard({ paper, idx, searchQuery = "" }: { paper: PaperContent; idx: number; searchQuery?: string }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -766,10 +915,12 @@ function PaperCard({ paper, idx }: { paper: PaperContent; idx: number }) {
           {/* 标题行 */}
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <h3 className="font-medium text-zinc-800 text-sm md:text-base leading-tight">
-              {paper.title}
+              <HighlightText text={paper.title} query={searchQuery} />
             </h3>
             {paper.venue && (
-              <span className="text-xs text-zinc-400 font-mono">{paper.venue}</span>
+              <span className="text-xs text-zinc-400 font-mono">
+                <HighlightText text={paper.venue} query={searchQuery} />
+              </span>
             )}
             {paper.status && (
               <span className={`px-2 py-0.5 text-[10px] rounded-full border ${
@@ -787,7 +938,9 @@ function PaperCard({ paper, idx }: { paper: PaperContent; idx: number }) {
           </div>
           {/* 作者 */}
           {paper.authors && (
-            <p className="text-xs text-zinc-500 mb-2">{paper.authors}</p>
+            <p className="text-xs text-zinc-500 mb-2">
+              <HighlightText text={paper.authors} query={searchQuery} />
+            </p>
           )}
           {/* 进度条 */}
           {paper.progress !== undefined && (
@@ -805,8 +958,8 @@ function PaperCard({ paper, idx }: { paper: PaperContent; idx: number }) {
           {paper.tags && paper.tags.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
               {paper.tags.map((tag) => (
-                <span key={tag} className="px-2 py-0.5 text-[10px] rounded-full bg-white/40 border border-white/50 text-zinc-500">
-                  {tag}
+                <span key={tag} className="chip-ios px-2 py-0.5 text-[10px] text-zinc-500">
+                  <HighlightText text={tag} query={searchQuery} />
                 </span>
               ))}
             </div>
@@ -832,9 +985,9 @@ function PaperCard({ paper, idx }: { paper: PaperContent; idx: number }) {
             className="overflow-hidden"
           >
             <div className="px-5 pb-5 border-t border-white/10 pt-4">
-              {/* 项目地址 */}
-              {paper.repo && paper.repo !== "" && (
-                <div className="mb-3">
+              {/* 论文链接 */}
+              <div className="flex flex-wrap gap-3 mb-3">
+                {paper.repo && paper.repo !== "" && (
                   <Link
                     href={paper.repo}
                     target="_blank"
@@ -844,13 +997,10 @@ function PaperCard({ paper, idx }: { paper: PaperContent; idx: number }) {
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
                     </svg>
-                    查看项目代码
+                    项目代码
                   </Link>
-                </div>
-              )}
-              {/* arXiv 链接 */}
-              {paper.arxiv && (
-                <div className="mb-3">
+                )}
+                {paper.arxiv && (
                   <Link
                     href={paper.arxiv}
                     target="_blank"
@@ -860,10 +1010,36 @@ function PaperCard({ paper, idx }: { paper: PaperContent; idx: number }) {
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
-                    arXiv 论文链接
+                    arXiv
                   </Link>
-                </div>
-              )}
+                )}
+                {!paper.arxiv && paper.doi && (
+                  <Link
+                    href={`https://doi.org/${paper.doi}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    DOI
+                  </Link>
+                )}
+                {!paper.arxiv && !paper.doi && paper.url && (
+                  <Link
+                    href={paper.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    论文链接
+                  </Link>
+                )}
+              </div>
               {/* 笔记正文 */}
               {paper.content && (
                 <div

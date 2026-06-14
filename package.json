@@ -34,6 +34,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "sync": "node scripts/sync-zotero.js",
     "build:updates": "node scripts/build-updates.js",
     "build": "node scripts/build-updates.js && next build",
     "start": "next start",

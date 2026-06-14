@@ -17,19 +17,6 @@ export type SkillItem = {
   level: number;
 };
 
-export type Project = {
-  /** 项目名称/仓库名 */
-  title: string;
-  /** 项目链接（GitHub 或外链） */
-  url: string;
-  /** 项目简要描述 */
-  description: string;
-  /** 项目标签数组，用于标识技术栈或特性 */
-  tags: string[];
-  /** 项目状态 */
-  status: '已完成' | '进行中' | '规划中';
-};
-
 export type StatItem = {
   /** 统计标签 */
   label: string;
@@ -65,6 +52,12 @@ export type PaperContent = {
   year?: number;
   /** arXiv 链接 */
   arxiv?: string;
+  /** DOI */
+  doi?: string;
+  /** 论文链接（非 arXiv 时使用） */
+  url?: string;
+  /** 分类 */
+  category?: string;
   /** 阅读进度 0-100 */
   progress?: number;
   /** 复现状态 */
@@ -75,28 +68,6 @@ export type PaperContent = {
   tags?: string[];
   /** 渲染后的笔记 HTML */
   content: string;
-};
-
-export type ResearchDirection = {
-  /** 方向名称 */
-  title: string;
-  /** 简要描述 */
-  description: string;
-  /** 相关关键词 */
-  keywords: string[];
-};
-
-export type Paper = {
-  /** 论文标题 */
-  title: string;
-  /** 作者 */
-  authors: string;
-  /** 发表信息（会议/期刊 + 年份） */
-  venue: string;
-  /** 一句话核心要点 */
-  highlight: string;
-  /** 链接（arXiv / 项目页） */
-  url: string;
 };
 
 export type Profile = {
@@ -116,18 +87,8 @@ export type Profile = {
   interests: string[];
   /** 社交链接集合 */
   socials: SocialLink[];
-  /** 编程语言（带熟练度） */
-  languages: SkillItem[];
-  /** 框架与工具（带熟练度） */
-  frameworksAndTools: SkillItem[];
   /** 关键统计数据（可点击导航） */
   stats: StatItem[];
-  /** 研究方向 */
-  researchDirections: ResearchDirection[];
-  /** 个人项目 */
-  projects: Project[];
-  /** 论文阅读列表 */
-  papers: Paper[];
   /** 备案号 */
   icpNumber?: string;
   /** 网站名称 */
@@ -172,6 +133,8 @@ function parseEnvJSON<T>(envVar: string | undefined, fallback: T): T {
 
 
 // 创建基础配置对象
+// 注意：skills、projects、papers、directions 数据统一由 content/ 下的 markdown 文件管理
+// 通过 npm run build 时 scripts/build-updates.js 自动构建为 JSON，无需在此硬编码
 const baseProfile = {
   name: process.env.NEXT_PUBLIC_PROFILE_NAME || "",
   motto: process.env.NEXT_PUBLIC_PROFILE_MOTTO || "",
@@ -186,88 +149,11 @@ const baseProfile = {
     "扩散模型",
     "美学界面",
   ],
-  languages: [
-    { name: "Python", level: 5 },
-    { name: "JavaScript", level: 4 },
-    { name: "TypeScript", level: 4 },
-    { name: "C++", level: 3 },
-  ],
-  frameworksAndTools: [
-    { name: "PyTorch", level: 5 },
-    { name: "React", level: 4 },
-    { name: "Next.js", level: 4 },
-    { name: "Node.js", level: 3 },
-    { name: "Git", level: 4 },
-    { name: "LaTeX", level: 3 },
-  ],
   stats: [
     { label: "研究方向", value: "3+", href: "#research" },
     { label: "开源项目", value: "5+", href: "#projects" },
     { label: "技术栈", value: "10+", href: "#skills" },
     { label: "论文阅读", value: "50+", href: "#papers" },
-  ],
-  researchDirections: [
-    {
-      title: "交互感知动作生成",
-      description: "研究多人场景下的交互动作合成，让模型理解人与人之间的物理互动关系，生成自然协调的交互动作序列。",
-      keywords: ["Human Interaction", "Motion Generation", "Physics-aware"],
-    },
-    {
-      title: "文本驱动动作合成",
-      description: "将自然语言描述映射为连续人体动作序列，探索语言与动作空间的对齐方法，实现细粒度的动作控制。",
-      keywords: ["Text2Motion", "Language-Action Alignment", "Fine-grained Control"],
-    },
-    {
-      title: "扩散模型与美学界面",
-      description: "探索扩散模型在视觉生成中的应用，同时研究如何构建具有美学价值的人机交互界面。",
-      keywords: ["Diffusion Models", "Aesthetic Interface", "Visual Generation"],
-    },
-  ],
-  projects: [
-    {
-      title: "个人主页",
-      description: "基于 Next.js 构建的个人主页，包含研究方向、技术栈、论文笔记等功能模块。",
-      tags: ["Next.js", "TypeScript", "Tailwind"],
-      url: "https://github.com/asydevf/homepage",
-      status: "已完成" as const,
-    },
-    {
-      title: "论文复现 — InterGen",
-      description: "复现交互感知动作生成论文，学习扩散模型在动作合成中的应用。",
-      tags: ["Diffusion", "Motion", "复现"],
-      url: "https://github.com/asydevf",
-      status: "进行中" as const,
-    },
-    {
-      title: "更多项目待补充",
-      description: "后续会在 GitHub 上开源更多研究相关代码和工具。",
-      tags: ["Coming Soon"],
-      url: "https://github.com/asydevf",
-      status: "规划中" as const,
-    },
-  ],
-  papers: [
-    {
-      title: "InterGen: Interaction-aware Human Motion Generation via Diffusion",
-      authors: "Li et al.",
-      venue: "ICCV 2023",
-      highlight: "首次将交互感知引入扩散模型动作生成",
-      url: "https://arxiv.org/abs/2304.12294",
-    },
-    {
-      title: "MotionDiffuse: Text-Driven Human Motion Generation with Diffusion",
-      authors: "Zhang et al.",
-      venue: "arXiv 2022",
-      highlight: "文本到动作的扩散模型 baseline",
-      url: "https://arxiv.org/abs/2208.15001",
-    },
-    {
-      title: "HumanMAC: Masked Motion Completion for Human Motion Prediction",
-      authors: "Chen et al.",
-      venue: "ICCV 2023",
-      highlight: "基于掩码补全的动作预测范式",
-      url: "https://arxiv.org/abs/2303.14937",
-    },
   ],
   siteName: process.env.NEXT_PUBLIC_SITE_NAME || "",
   siteDomain: process.env.NEXT_PUBLIC_SITE_DOMAIN || "",

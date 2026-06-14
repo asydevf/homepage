@@ -102,3 +102,7 @@ dist
 # Temporary folders
 tmp/
 temp/
+
+# Zotero sync tracking files
+content/papers/.zotero-imported.json
+content/papers/.zotero-ignored.json
