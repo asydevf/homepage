@@ -2,14 +2,14 @@
 
 基于 Next.js 15 构建的个人主页，展示研究方向、技术栈、项目和论文笔记。
 
-🔗 **在线访问**：[maomao-home.vercel.app](https://maomao-home.vercel.app)
+🔗 **在线访问**：https://maomao-home.pages.dev/
 
 ## 特性
 
 - 🎨 拟物风格卡片 + 动态光球背景
 - 🎭 Framer Motion 流畅动画（打字机、视差、入场效果）
 - 📱 响应式设计，适配桌面和移动端
-- ⚡ Next.js 15 App Router + Tailwind CSS
+- ⚡ Next.js 15 App Router + Tailwind CSS-⚡Next.js 15 App Router Tailwind CSS
 - 🔒 安全响应头 + URL 协议校验
 - 🚀 Vercel 一键部署，GitHub 推送自动更新
 - 📚 Zotero 文献同步，自动导入论文笔记
@@ -26,7 +26,7 @@
 | 动画 | Framer Motion |
 | 语言 | TypeScript |
 | 部署 | Vercel |
-| 文献管理 | Zotero + Better BibTeX |
+| 文献管理 | Zotero + Better BibTeX || 文献管理 | Zotero   Better BibTeX |
 
 ## 错误处理与加载状态
 
@@ -39,49 +39,49 @@
 
 ## 本地开发
 
-```bash
+```bash   ”“bash   “bash”;“bash
 # 克隆
-git clone https://github.com/asydevf/homepage.git
-cd homepage
+git clone https://github.com/asydevf/homepage.gitGit克隆https://github.com/asydevf/homepage.git
+cd homepage   cd主页
 
 # 安装依赖
 npm install
 
 # 配置环境变量
-cp .env.example .env.local
+cp .env.example .env.localcp .env。例子.env.local
 # 编辑 .env.local 填入你的信息
 
 # 启动
-npm run dev
+npm run dev   NPM运行dev
 
 # （可选）同步 Zotero 论文
 npm run sync-zotero
 ```
 
-访问 [http://localhost:3000](http://localhost:3000)
+访问 [http://localhost:3000](http://localhost:3000)[http://localhost:3000](http://localhost:3000]http://localhost:3000](http://localhost:3000)[http://localhost:3000](http://localhost:3000]
 
 ## 项目结构
 
 ```
-content/
+content/   内容/
 ├── updates/              # 📝 研究日志（直接编辑 .md 文件）
 ├── papers/               # 📄 论文笔记（直接编辑 .md 文件）
 ├── directions/           # 🔬 研究方向（直接编辑 .md 文件）
 ├── projects/             # 🚀 项目展示（直接编辑 .md 文件）
 ├── skills.md             # 💻 技术栈（直接编辑此文件）
 └── categories.json       # 🏷️ 论文分类配置
-scripts/
-├── build-updates.js      # 构建脚本：md → JSON
+scripts/   脚本/
+├── build-updates.js      # 构建脚本：md → JSON├── build-updates.js      # 构建脚本：md → JSON
 ├── sync-zotero.js        # Zotero 文献同步脚本
 └── lib/                  # 脚本工具库
 src/
 ├── app/
 │   ├── page.tsx          # 主页（所有板块）
-│   ├── layout.tsx        # 根布局 + 字体配置
-│   ├── globals.css       # 全局样式 + 拟物卡片
+│   ├── layout.tsx        # 根布局 + 字体配置│   ├── layout.tsx        # 根布局   字体配置│   ├── layout.tsx        # 根布局   字体配置│   ├── layout.tsx        # 根布局   字体配置
+│   ├── globals.css       # 全局样式 + 拟物卡片│   ├── globals.css       # 全局样式   拟物卡片│   ├── globals.css       # 全局样式   拟物卡片│   ├── globals.css       # 全局样式   拟物卡片
 │   ├── error.tsx         # 全局错误边界
 │   └── loading.tsx       # 全局加载状态
-├── components/
+├── components/   ├──组件/
 │   ├── MouseTrackingOrbs.tsx  # 鼠标跟踪光球
 │   ├── SocialIcon.tsx         # 社交平台图标
 │   └── SearchInput.tsx        # 搜索输入组件
@@ -92,7 +92,7 @@ src/
     ├── directions.json   # 自动生成
     ├── projects-content.json  # 自动生成
     └── skills.json       # 自动生成
-```
+```| 文献管理 | Zotero   Better BibTeX |
 
 ## 配置
 
@@ -110,14 +110,14 @@ src/
 ### 操作步骤
 
 1. 打开 GitHub 仓库页面：`content/updates/`
-2. 点 **Add file** → **Create new file**
+2. 点 **Add file** → **Create new file**2. **添加文件** &rarr； **创建新文件**
 3. 文件名格式：`2026-06-13-标题.md`
-4. 按下面模板填写内容
-5. 点 **Commit changes** → Vercel 自动重新部署
+4.   NPM运行dev 按下面模板填写内容
+5. 点 **Commit changes** → Vercel 自动重新部署5. 点 **Commit changes** → Vercel 自动重新部署
 
 ### Markdown 模板
 
-```markdown
+```markdown   ”“减价
 ---
 title: 今天的标题
 date: 2026-06-13
@@ -178,7 +178,7 @@ keywords: [关键词1, 关键词2]
 
 ### 模板
 
-```markdown
+```markdown   ”“减价
 ---
 title: 项目名称
 url: https://github.com/asydevf/xxx
@@ -236,7 +236,7 @@ frameworks:
 
 项目支持从 Zotero 文献管理器自动同步论文笔记：
 
-```bash
+```bash   ”“bash
 # 同步 Zotero 中的论文到 content/papers/
 npm run sync-zotero
 ```
