@@ -51,9 +51,6 @@
     "status": "待读",
     "tags": [],
     "content": "<h2>阅读笔记</h2>\n<p>（待补充）</p>\n",
-    "arxivId": "2410.10010",
-    "doi": "10.48550/arXiv.2410.10010",
-    "url": "http://arxiv.org/abs/2410.10010",
     "category": "arXiv 预印本"
   },
   {
@@ -95,8 +92,6 @@
     "status": "待读",
     "tags": [],
     "content": "<h2>阅读笔记</h2>\n<p>（待补充）</p>\n",
-    "doi": "10.1016/j.cviu.2025.104470",
-    "url": "https://linkinghub.elsevier.com/retrieve/pii/S1077314225001936",
-    "category": "期刊论文"
+    "category": "其他"
   }
 ]

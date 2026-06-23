@@ -5,7 +5,9 @@ import type { NextConfig } from "next";
  * 功能：配置图片域名白名单、安全响应头等设置
  */
 const nextConfig: NextConfig = {
+  output: "export",
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
