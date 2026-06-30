@@ -68,4 +68,4 @@ src/
 
 ## 部署
 
-静态导出模式 (`output: "export"`)，构建产物在 `out/` 目录。环境变量通过 `.env` 文件配置，同步到 Cloudflare Pages 可使用 `scripts/sync-env-to-cloudflare.js` 或 `deploy-env.bat`。
+静态导出模式 (`output: "export"`)，构建产物在 `out/` 目录，部署到阿里云。环境变量通过 `.env` 文件配置。

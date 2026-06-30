@@ -1,21 +1,20 @@
-# maomao 的个人主页
+# QQHKX 的个人主页
 
 基于 Next.js 15 构建的个人主页，展示研究方向、技术栈、项目和论文笔记。
 
-🔗 **在线访问**：https://maomao-home.pages.dev/
+🔗 **在线访问**：https://qqhkx.com
 
 ## 特性
 
 - 🎨 拟物风格卡片 + 动态光球背景
 - 🎭 Framer Motion 流畅动画（打字机、视差、入场效果）
 - 📱 响应式设计，适配桌面和移动端
-- ⚡ Next.js 15 App Router + Tailwind CSS-⚡Next.js 15 App Router Tailwind CSS
+- ⚡ Next.js 15 App Router + Tailwind CSS 4
 - 🔒 安全响应头 + URL 协议校验
-- 🚀 Vercel 一键部署，GitHub 推送自动更新
 - 📚 Zotero 文献同步，自动导入论文笔记
 - 🛡️ 全局错误处理 + 加载状态页面
-- 🏷️ 论文分类系统（arXiv、会议、期刊等）
 - 🔍 全文搜索，支持标题、作者、笔记内容搜索
+- 📂 按研究方向分板块展示论文和项目
 
 ## 技术栈
 
@@ -25,99 +24,83 @@
 | 样式 | Tailwind CSS 4 |
 | 动画 | Framer Motion |
 | 语言 | TypeScript |
-| 部署 | Vercel |
-| 文献管理 | Zotero + Better BibTeX || 文献管理 | Zotero   Better BibTeX |
-
-## 错误处理与加载状态
-
-项目内置了全局错误边界和加载状态页面：
-
-- **错误页面** (`error.tsx`): 当页面组件抛出异常时，显示友好的错误界面而非白屏
-- **加载页面** (`loading.tsx`): 在页面数据加载期间显示 iOS 风格的加载动画
-
-这些页面会自动生效，无需额外配置。
+| 部署 | 阿里云 |
+| 文献管理 | Zotero + Better BibTeX |
 
 ## 本地开发
 
-```bash   ”“bash   “bash”;“bash
+```bash
 # 克隆
-git clone https://github.com/asydevf/homepage.gitGit克隆https://github.com/asydevf/homepage.git
-cd homepage   cd主页
+git clone https://github.com/asydevf/homepage.git
+cd homepage
 
 # 安装依赖
 npm install
 
 # 配置环境变量
-cp .env.example .env.localcp .env。例子.env.local
+cp .env.example .env.local
 # 编辑 .env.local 填入你的信息
 
 # 启动
-npm run dev   NPM运行dev
-
-# （可选）同步 Zotero 论文
-npm run sync-zotero
+npm run dev
 ```
 
-访问 [http://localhost:3000](http://localhost:3000)[http://localhost:3000](http://localhost:3000]http://localhost:3000](http://localhost:3000)[http://localhost:3000](http://localhost:3000]
+访问 [http://localhost:3000](http://localhost:3000)
 
 ## 项目结构
 
 ```
-content/   内容/
-├── updates/              # 📝 研究日志（直接编辑 .md 文件）
-├── papers/               # 📄 论文笔记（直接编辑 .md 文件）
-├── directions/           # 🔬 研究方向（直接编辑 .md 文件）
-├── projects/             # 🚀 项目展示（直接编辑 .md 文件）
-├── skills.md             # 💻 技术栈（直接编辑此文件）
+content/
+├── updates/              # 📝 研究日志
+├── papers/               # 📄 论文笔记
+├── directions/           # 🔬 研究方向
+├── projects/             # 🚀 项目展示
+├── skills.md             # 💻 技术栈
 └── categories.json       # 🏷️ 论文分类配置
-scripts/   脚本/
-├── build-updates.js      # 构建脚本：md → JSON├── build-updates.js      # 构建脚本：md → JSON
-├── sync-zotero.js        # Zotero 文献同步脚本
+scripts/
+├── build-updates.js      # 构建脚本：md → JSON
+├── sync-zotero.js        # Zotero 文献同步
 └── lib/                  # 脚本工具库
 src/
 ├── app/
-│   ├── page.tsx          # 主页（所有板块）
-│   ├── layout.tsx        # 根布局 + 字体配置│   ├── layout.tsx        # 根布局   字体配置│   ├── layout.tsx        # 根布局   字体配置│   ├── layout.tsx        # 根布局   字体配置
-│   ├── globals.css       # 全局样式 + 拟物卡片│   ├── globals.css       # 全局样式   拟物卡片│   ├── globals.css       # 全局样式   拟物卡片│   ├── globals.css       # 全局样式   拟物卡片
+│   ├── page.tsx          # 主页（组合各区块）
+│   ├── layout.tsx        # 根布局 + 字体配置
+│   ├── globals.css       # 全局样式 + 拟物卡片
 │   ├── error.tsx         # 全局错误边界
 │   └── loading.tsx       # 全局加载状态
-├── components/   ├──组件/
-│   ├── MouseTrackingOrbs.tsx  # 鼠标跟踪光球
-│   ├── SocialIcon.tsx         # 社交平台图标
-│   └── SearchInput.tsx        # 搜索输入组件
+├── components/
+│   ├── TypingText.tsx        # 打字机效果
+│   ├── SkillBar.tsx          # 技能进度条
+│   ├── SectionTitle.tsx      # 通用板块标题
+│   ├── ResearchDirectionsList.tsx  # 研究方向列表
+│   ├── PapersList.tsx        # 论文列表（按方向分板块）
+│   ├── PaperCard.tsx         # 论文卡片
+│   ├── SearchInput.tsx       # 搜索输入组件
+│   ├── SocialIcon.tsx        # 社交平台图标
+│   └── MouseTrackingOrbs.tsx # 鼠标跟踪光球
 └── data/
     ├── profile.ts        # 个人信息配置
-    ├── updates.json      # 自动生成（勿手动编辑）
-    ├── papers-content.json  # 自动生成
-    ├── directions.json   # 自动生成
-    ├── projects-content.json  # 自动生成
-    └── skills.json       # 自动生成
-```| 文献管理 | Zotero   Better BibTeX |
+    └── *.json            # 自动生成（勿手动编辑）
+```
 
 ## 配置
 
-所有个人信息通过 `.env.local` 配置，详见 [.env.example](.env.example)。
+所有个人信息通过 `.env` 文件配置，详见 [ENV_CONFIG.md](ENV_CONFIG.md)。
 
 关键配置项：
-- `NEXT_PUBLIC_SITE_NAME` — 网站名称
+- `NEXT_PUBLIC_PROFILE_NAME` — 显示名称
 - `NEXT_PUBLIC_PROFILE_MOTTO` — 座右铭（打字机效果）
 - `NEXT_PUBLIC_SOCIALS` — 社交链接（JSON）
 
-## 📝 研究日志（不用写代码）
+## 📝 内容管理（不用写代码）
 
-在 `content/updates/` 目录创建 Markdown 文件即可更新网站内容。
+所有内容通过 `content/` 目录下的 Markdown 文件管理，修改后运行 `npm run build` 即可。
 
-### 操作步骤
+### 研究日志
 
-1. 打开 GitHub 仓库页面：`content/updates/`
-2. 点 **Add file** → **Create new file**2. **添加文件** &rarr； **创建新文件**
-3. 文件名格式：`2026-06-13-标题.md`
-4.   NPM运行dev 按下面模板填写内容
-5. 点 **Commit changes** → Vercel 自动重新部署5. 点 **Commit changes** → Vercel 自动重新部署
+在 `content/updates/` 创建文件，文件名格式：`2026-06-13-标题.md`
 
-### Markdown 模板
-
-```markdown   ”“减价
+```markdown
 ---
 title: 今天的标题
 date: 2026-06-13
@@ -126,32 +109,38 @@ status: 进行中
 tags: [Diffusion, Motion]
 ---
 
-## 今日进展
-做了什么写在这里...
-
-## 心得收获
-学到了什么写在这里...
-
-## 下一步
-接下来要做什么...
+正文内容...
 ```
 
-**字段说明：**
-| 字段 | 必填 | 说明 |
-|------|------|------|
-| `title` | ✅ | 标题 |
-| `date` | ✅ | 日期 (YYYY-MM-DD) |
-| `category` | ❌ | 分类，如"论文复现"、"项目"、"学习" |
-| `status` | ❌ | 状态：已完成 / 进行中 / 规划中 |
-| `tags` | ❌ | 标签数组 |
+### 论文笔记
 
-正文支持完整 Markdown 语法（标题、列表、代码块、引用等）。
+在 `content/papers/` 创建文件，添加 `direction` 字段自动归入方向板块：
 
-## 🔬 研究方向（不用写代码）
+```markdown
+---
+title: "论文标题"
+authors: 作者 et al.
+venue: ICCV 2023
+year: 2023
+arxiv: https://arxiv.org/abs/xxxx.xxxxx
+progress: 60
+status: 阅读中
+tags: [Diffusion, Motion]
+direction: 人体交互生成
+---
 
-在 `content/directions/` 目录创建 `.md` 文件即可添加研究方向。
+## 论文概述
+...
 
-### 模板
+## 阅读笔记
+...
+```
+
+**direction 可选值：** `图像融合`、`人体交互生成`、`路径规划`
+
+### 研究方向
+
+在 `content/directions/` 创建文件，用数字前缀控制顺序：
 
 ```markdown
 ---
@@ -160,186 +149,65 @@ emoji: 🔬
 keywords: [关键词1, 关键词2]
 ---
 
-这个方向的简要描述...
+方向描述...
 ```
 
-**字段说明：**
-| 字段 | 必填 | 说明 |
-|------|------|------|
-| `title` | ✅ | 方向名称 |
-| `emoji` | ❌ | 显示的 emoji 图标 |
-| `keywords` | ❌ | 关键词数组 |
+### 项目展示
 
-用数字前缀控制显示顺序：`01-xxx.md`、`02-xxx.md`。
+在 `content/projects/` 创建文件：
 
-## 🚀 项目展示（不用写代码）
-
-在 `content/projects/` 目录创建 `.md` 文件即可添加项目。
-
-### 模板
-
-```markdown   ”“减价
+```markdown
 ---
 title: 项目名称
 url: https://github.com/asydevf/xxx
 description: 一句话描述
 tags: [Next.js, TypeScript]
 status: 已完成
+direction: 人体交互生成
 ---
 
-项目详细介绍...
+项目介绍...
 ```
 
-**字段说明：**
-| 字段 | 必填 | 说明 |
-|------|------|------|
-| `title` | ✅ | 项目名称 |
-| `url` | ❌ | 项目链接（GitHub、演示站等） |
-| `description` | ❌ | 一句话描述 |
-| `tags` | ❌ | 技术栈标签数组 |
-| `status` | ❌ | 状态：已完成 / 进行中 / 规划中 |
+### 技术栈
 
-## 💻 技术栈（不用写代码）
+编辑 `content/skills.md`，`level` 范围 1-5：
 
-编辑 `content/skills.md` 文件即可修改技术栈：
-
-```markdown
----
+```yaml
 languages:
   - name: Python
     level: 5
-  - name: JavaScript
-    level: 4
 
 frameworks:
   - name: PyTorch
     level: 5
-  - name: React
-    level: 4
----
 ```
-
-`level` 范围 1-5，显示为进度条。
-
-## 📄 论文笔记（不用写代码）
-
-在 `content/papers/` 目录创建 Markdown 文件即可添加论文笔记。
-
-### 方式一：手动创建
-
-1. 打开 GitHub 仓库页面：`content/papers/`
-2. 点 **Add file** → **Create new file**
-3. 文件名：`论文简称.md`（如 `intergen.md`）
-4. 按模板填写 → Commit → 自动部署
-
-### 方式二：Zotero 自动同步
-
-项目支持从 Zotero 文献管理器自动同步论文笔记：
-
-```bash   ”“bash
-# 同步 Zotero 中的论文到 content/papers/
-npm run sync-zotero
-```
-
-**配置要求：**
-- 安装 [Zotero](https://www.zotero.org/) 并配置 Better BibTeX 插件
-- 在 Zotero 中导出论文时添加自定义字段：
-  - `progress`: 阅读进度 (0-100)
-  - `status`: 状态（已读/阅读中/复现中/已复现）
-  - `tags`: 标签（逗号分隔）
-
-**同步后的文件会自动：**
-- 生成标准 Markdown 格式
-- 包含论文元数据（标题、作者、会议等）
-- 保留你的笔记和标注
-- 自动分类到对应类别
-
-### Markdown 模板
-
-```markdown
----
-title: "论文完整标题"
-authors: 作者 et al.
-venue: ICCV 2023
-year: 2023
-arxiv: https://arxiv.org/abs/xxxx.xxxxx
-doi: 10.1016/j.eswa.2025.129988
-url: https://example.com/paper
-progress: 60
-status: 阅读中
-repo: https://github.com/xxx/xxx
-tags: [Diffusion, Motion]
-category: arXiv 预印本
----
-
-## 论文概述
-一句话说清楚论文做了什么...
-
-## 核心方法
-方法的关键点...
-
-## 阅读笔记
-你的理解和思考...
-
-## 复现进展
-- [x] 读完论文
-- [x] 跑通代码
-- [ ] 对比实验
-```
-
-**字段说明：**
-| 字段 | 必填 | 说明 |
-|------|------|------|
-| `title` | ✅ | 论文标题 |
-| `authors` | ❌ | 作者（多个用逗号分隔） |
-| `venue` | ❌ | 会议/期刊名称 |
-| `year` | ❌ | 发表年份 |
-| `arxiv` | ❌ | arXiv 链接（自动提取元数据） |
-| `doi` | ❌ | DOI 编号（如 `10.1016/j.eswa.2025.129988`） |
-| `url` | ❌ | 论文链接（非 arXiv 时使用） |
-| `progress` | ❌ | 阅读进度 0-100 |
-| `status` | ❌ | 状态：已读 / 阅读中 / 复现中 / 已复现 / 待读 |
-| `repo` | ❌ | 项目仓库地址 |
-| `tags` | ❌ | 标签数组 |
-| `category` | ❌ | 分类：arxiv / conference / journal / book / other |
-
-**论文分类系统：**
-
-在 `content/categories.json` 中配置论文分类：
-
-```json
-[
-  { "id": "arxiv", "name": "arXiv 预印本", "emoji": "📄" },
-  { "id": "conference", "name": "会议论文", "emoji": "🎤" },
-  { "id": "journal", "name": "期刊论文", "emoji": "📰" },
-  { "id": "book", "name": "书籍", "emoji": "📖" },
-  { "id": "other", "name": "其他", "emoji": "📁" }
-]
-```
-
-论文会根据 `category` 字段自动分类显示。
 
 ## 部署
 
-推送到 GitHub 后，[Vercel](https://vercel.com) 自动部署：
+项目构建为静态站点，部署到阿里云：
 
 ```bash
-git push origin main
+npm run build
+# 产物在 out/ 目录，上传到服务器即可
 ```
 
 ## 更新日志
 
+### 2026-06-30
+- 🔀 按研究方向分板块展示论文和项目（图像融合、人体交互生成、路径规划）
+- ✂️ 拆分 page.tsx 为独立组件，提升可维护性
+- 🖼️ 压缩图片资源（avatar 1.7MB→63KB，web 3MB→114KB）
+- 📄 添加 CLAUDE.md 项目开发指南
+- 🧹 清理杂项文件
+
 ### 2026-06-14
 - ✨ 新增 Zotero 文献同步功能
 - 🛡️ 添加全局错误边界和加载状态页面
-- 🏷️ 实现论文分类系统
-- 📁 优化项目结构，添加脚本工具库
-- 🔍 新增全文搜索功能，支持标题、作者、笔记内容搜索
+- 🔍 新增全文搜索功能
 
 ### 2026-06-13
-- 🎉 项目上线，支持研究日志、论文笔记、研究方向、项目展示
-- 🎨 实现拟物风格卡片 + 动态光球背景
-- 📱 完成响应式设计适配
+- 🎉 项目上线
 
 ## License
 
