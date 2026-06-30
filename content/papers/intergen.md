@@ -8,6 +8,7 @@ progress: 80
 status: 复现中
 repo: https://github.com/tr3e/InterGen
 tags: [Diffusion, Motion, Interaction]
+direction: 人体交互生成
 ---
 
 ## 论文概述

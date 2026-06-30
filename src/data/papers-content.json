@@ -7,6 +7,7 @@
     "progress": 0,
     "status": "待读",
     "tags": [],
+    "direction": "人体交互生成",
     "content": "<h2>阅读笔记</h2>\n<p>（待补充）</p>\n",
     "doi": "10.1016/j.eswa.2025.129988",
     "url": "https://linkinghub.elsevier.com/retrieve/pii/S0957417425036036",
@@ -20,6 +21,7 @@
     "progress": 0,
     "status": "待读",
     "tags": [],
+    "direction": "图像融合",
     "content": "<h2>阅读笔记</h2>\n<p>（待补充）</p>\n",
     "doi": "10.1016/j.inffus.2021.12.004",
     "url": "https://linkinghub.elsevier.com/retrieve/pii/S1566253521002542",
@@ -39,6 +41,7 @@
       "Motion",
       "Interaction"
     ],
+    "direction": "人体交互生成",
     "content": "<h2>论文概述</h2>\n<p>提出了一种交互感知的人体动作生成方法，通过扩散模型建模多人之间的物理互动关系。核心思路是将交互条件注入扩散过程，让模型学会生成协调的双人动作。</p>\n<h2>核心方法</h2>\n<ul>\n<li>基于 DDPM 的动作生成框架</li>\n<li>交互条件编码器：捕捉两人之间的相对位置和动作关系</li>\n<li>分阶段训练：先学单人动作，再学交互模式</li>\n</ul>\n<h2>阅读笔记</h2>\n<p>关键创新点在于交互表示的设计——不是简单拼接两人动作，而是用相对位姿和接触点来编码交互关系。这比直接 concatenation 效果好很多。</p>\n<h2>复现进展</h2>\n<ul>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> 读完论文，理解核心方法</li>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> 跑通官方代码 demo</li>\n<li><input disabled=\"\" type=\"checkbox\"> 在新数据集上训练</li>\n<li><input disabled=\"\" type=\"checkbox\"> 对比实验</li>\n</ul>\n",
     "category": "arXiv 预印本"
   },
@@ -50,6 +53,7 @@
     "progress": 0,
     "status": "待读",
     "tags": [],
+    "direction": "人体交互生成",
     "content": "<h2>阅读笔记</h2>\n<p>（待补充）</p>\n",
     "category": "arXiv 预印本"
   },
@@ -62,6 +66,7 @@
       "Diffusion",
       "Motion"
     ],
+    "direction": "人体交互生成",
     "content": "<h2>阅读笔记</h2>\n<p>（待补充）</p>\n<blockquote>\n<p>💡 这篇论文使用了简化格式：frontmatter 中只填写了 arXiv ID，\ntitle/authors/venue/year 会在构建时自动从 arXiv API 获取。\n如果配置了 Zotero，还会自动匹配 Zotero 文献库中的信息。</p>\n</blockquote>\n",
     "authors": "Guy Tevet, Sigal Raab, Brian Gordon, Yonatan Shafir, Daniel Cohen-Or, Amit H. Bermano",
     "year": 2022,
@@ -80,6 +85,7 @@
       "Diffusion",
       "Text2Motion"
     ],
+    "direction": "人体交互生成",
     "content": "<h2>论文概述</h2>\n<p>首个将扩散模型应用于文本驱动动作生成的工作。将自然语言描述映射为连续的人体动作序列，实现了从文本到动作的端到端生成。</p>\n<h2>核心方法</h2>\n<ul>\n<li>文本编码器提取语义特征</li>\n<li>扩散模型在动作空间中逐步去噪</li>\n<li>分层控制：全局动作 + 局部细节</li>\n</ul>\n<h2>阅读笔记</h2>\n<p>Text2Motion 的 baseline，后续很多工作都基于这个框架扩展。扩散模型在动作空间的效果比 GAN 更稳定，但推理速度较慢是主要瓶颈。</p>\n<h2>复现进展</h2>\n<ul>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> 读完论文</li>\n<li><input disabled=\"\" type=\"checkbox\"> 跑通代码</li>\n<li><input disabled=\"\" type=\"checkbox\"> 尝试用自己的文本输入测试</li>\n</ul>\n",
     "category": "arXiv 预印本"
   },
@@ -91,6 +97,7 @@
     "progress": 0,
     "status": "待读",
     "tags": [],
+    "direction": "人体交互生成",
     "content": "<h2>阅读笔记</h2>\n<p>（待补充）</p>\n",
     "category": "其他"
   }

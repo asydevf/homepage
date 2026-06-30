@@ -66,6 +66,8 @@ export type PaperContent = {
   repo?: string;
   /** 标签 */
   tags?: string[];
+  /** 研究方向 */
+  direction?: string;
   /** 渲染后的笔记 HTML */
   content: string;
 };

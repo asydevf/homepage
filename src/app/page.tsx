@@ -4,15 +4,17 @@ import Link from "next/link";
 import { profile, type SkillItem, type Update, type PaperContent } from "@/data/profile";
 import updates from "@/data/updates.json";
 import papersContent from "@/data/papers-content.json";
-import directions from "@/data/directions.json";
 import projectsContent from "@/data/projects-content.json";
 import skillsData from "@/data/skills.json";
-import categoriesData from "@/data/categories.json";
-import { useMemo, useEffect, useState, useCallback } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialIcon from "@/components/SocialIcon";
 import MouseTrackingOrbs from "@/components/MouseTrackingOrbs";
-import SearchInput, { HighlightText } from "@/components/SearchInput";
+import TypingText from "@/components/TypingText";
+import SkillBar from "@/components/SkillBar";
+import SectionTitle from "@/components/SectionTitle";
+import ResearchDirectionsList from "@/components/ResearchDirectionsList";
+import PapersList from "@/components/PapersList";
 
 /**
  * Home 页面组件
@@ -29,8 +31,28 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  // 项目数据从 JSON 读取
-  const projects = projectsContent as { title: string; url: string; description: string; tags: string[]; status: string; content?: string }[];
+  // 项目数据从 JSON 读取，按研究方向分组
+  type ProjectItem = { title: string; url: string; description: string; tags: string[]; status: string; direction?: string; content?: string };
+  const projects = projectsContent as ProjectItem[];
+
+  const dirEmoji: Record<string, string> = { "图像融合": "🔀", "人体交互生成": "🤸", "路径规划": "🗺️" };
+  const projectGroups = useMemo(() => {
+    const MAIN_DIRS = ["图像融合", "人体交互生成", "路径规划"];
+    const dirMap = new Map<string, ProjectItem[]>();
+    for (const d of MAIN_DIRS) dirMap.set(d, []);
+    for (const p of projects) {
+      const d = p.direction && MAIN_DIRS.includes(p.direction) ? p.direction : "__other__";
+      if (!dirMap.has(d)) dirMap.set(d, []);
+      dirMap.get(d)!.push(p);
+    }
+    const groups: { dir: string; items: ProjectItem[] }[] = [];
+    for (const [dir, items] of dirMap) {
+      groups.push({ dir, items });
+    }
+    // "其他" 放最后
+    groups.sort((a, b) => (a.dir === "__other__" ? 1 : b.dir === "__other__" ? -1 : 0));
+    return groups;
+  }, [projects]);
 
   // 使用 useMemo 构造信息块，避免在 JSX 中直接书写复杂字面量
   const blocks = useMemo(
@@ -284,40 +306,55 @@ export default function Home() {
 
       {/* 研究方向 */}
       <section id="research" className="mx-auto max-w-6xl px-6 pb-16 scroll-mt-24">
-        <SectionTitle title="研究方向" subtitle="探索人机交互、动作生成与扩散模型的交叉领域" />
+        <SectionTitle title="研究方向" subtitle="图像融合、人体交互生成与路径规划" />
         <ResearchDirectionsList />
       </section>
 
       {/* 开源项目 */}
       <section id="projects" className="mx-auto max-w-6xl px-6 pb-16 scroll-mt-24">
         <SectionTitle title="开源项目" subtitle="研究过程中的代码实现与工具" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, idx) => (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {projectGroups.map((group) => (
             <motion.div
-              key={project.title}
-              initial={{ scale: 0.9, opacity: 0, y: 40 }}
-              whileInView={{ scale: 1, opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{
-                type: "spring",
-                stiffness: 120,
-                damping: 20,
-                delay: idx * 0.1,
-              }}
-              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-              className="group relative card-skeu texture-spot p-6 overflow-hidden border border-white/10 hover:border-white/50 transition-all duration-300"
+              key={group.dir}
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="relative card-skeu texture-spot p-6"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative z-10">
-                <Link href={project.url} className="block" target="_blank"
-                        rel="noopener noreferrer">
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div className="flex items-center gap-2.5 flex-1 min-w-0">
-                      <h3 className="font-semibold text-zinc-800 group-hover:text-white transition-colors duration-200 text-lg leading-tight truncate">
+              {/* 板块头部 */}
+              <div className="flex items-center gap-3 mb-5">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+                  style={{ background: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(236,72,153,0.15))" }}
+                >
+                  {group.dir === "__other__" ? "📁" : (dirEmoji[group.dir] || "🔬")}
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-zinc-800">
+                    {group.dir === "__other__" ? "其他" : group.dir}
+                  </h3>
+                  <p className="text-xs text-zinc-400">{group.items.length} 个项目</p>
+                </div>
+              </div>
+
+              {/* 项目列表 */}
+              <div className="space-y-3">
+                {group.items.map((project) => (
+                  <Link
+                    key={project.title}
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block p-4 rounded-2xl border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all duration-200"
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h4 className="font-medium text-zinc-800 text-sm leading-tight truncate group-hover:text-purple-600 transition-colors">
                         {project.title}
-                      </h3>
+                      </h4>
                       <span
-                        className={`flex-shrink-0 px-2 py-0.5 text-[10px] font-medium rounded-full border ${
+                        className={`flex-shrink-0 px-2 py-0.5 text-[10px] rounded-full border ${
                           project.status === "已完成"
                             ? "bg-emerald-50 border-emerald-200 text-emerald-600"
                             : project.status === "进行中"
@@ -328,29 +365,18 @@ export default function Home() {
                         {project.status}
                       </span>
                     </div>
-                    <div className="flex-shrink-0 mt-1">
-                      <div className="w-8 h-8 rounded-full bg-white/40 group-hover:bg-white/60 flex items-center justify-center transition-colors duration-200">
-                        <svg className="w-4 h-4 text-zinc-500 group-hover:text-zinc-700 transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M7 17L17 7" />
-                          <path d="M8 7h9v9" />
-                        </svg>
-                      </div>
+                    <p className="text-zinc-500 text-xs leading-relaxed mb-2 line-clamp-2">
+                      {project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="chip-ios px-2 py-0.5 text-[10px] text-zinc-500">
+                          {tag}
+                        </span>
+                      ))}
                     </div>
-                  </div>
-                  <p className="text-zinc-600 text-sm leading-relaxed mb-4 group-hover:text-zinc-700 transition-colors duration-200">
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="chip-ios px-2.5 py-1 text-xs text-zinc-700">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="text-xs text-zinc-400 group-hover:text-white/50 transition-colors duration-200">
-                    研究笔记 · 论文复现
-                  </div>
-                </Link>
+                  </Link>
+                ))}
               </div>
             </motion.div>
           ))}
@@ -518,547 +544,5 @@ export default function Home() {
         </motion.main>
       )}
     </AnimatePresence>
-  );
-}
-
-/**
- * 打字机效果组件
- * @param text - 要显示的文本
- * @param speed - 打字速度（毫秒）
- * @param delay - 开始打字前的延迟时间（毫秒）
- */
-function TypingText({ text, speed = 80, delay = 0 }: { text: string; speed?: number; delay?: number }) {
-  const [index, setIndex] = useState(0);
-  const [showCursor, setShowCursor] = useState(true);
-  const [started, setStarted] = useState(false);
-  
-  // 处理初始延迟
-  useEffect(() => {
-    if (delay > 0) {
-      const startTimer = setTimeout(() => {
-        setStarted(true);
-      }, delay);
-      return () => clearTimeout(startTimer);
-    } else {
-      setStarted(true);
-    }
-  }, [delay]);
-  
-  useEffect(() => {
-    if (!started || index >= text.length) return;
-    
-    // 检查当前字符是否为逗号，如果是则增加停顿时间
-     const currentChar = text[index - 1];
-     const isComma = currentChar === '，' || currentChar === ',';
-     const typingDelay = isComma ? speed * 5 : speed; // 逗号处停顿5倍时间
-    
-    const timer = setTimeout(() => {
-      setIndex((i) => (i < text.length ? i + 1 : i));
-    }, typingDelay);
-    
-    return () => clearTimeout(timer);
-  }, [started, index, text, speed]);
-
-  // 光标闪烁效果
-  useEffect(() => {
-    const cursorTimer = setInterval(() => {
-      setShowCursor(prev => !prev);
-    }, 530);
-    return () => clearInterval(cursorTimer);
-  }, []);
-
-  return (
-    <span aria-label={text} aria-live="polite" className="relative">
-      {text.slice(0, index)}
-      <motion.span
-        animate={{ opacity: showCursor ? 1 : 0 }}
-        transition={{ duration: 0.1 }}
-        className="inline-block w-0.5 h-5 bg-white/70 ml-0.5 align-middle"
-      />
-    </span>
-  );
-}
-
-/**
- * 技能熟练度进度条组件
- * @param item - 技能项，包含名称和熟练度
- */
-function SkillBar({ item }: { item: SkillItem }) {
-  return (
-    <div className="flex items-center gap-3">
-      <span className="text-sm text-zinc-700 w-20 flex-shrink-0">{item.name}</span>
-      <div className="flex-1 flex items-center gap-1">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div
-            key={i}
-            className={`h-1.5 flex-1 rounded-full transition-colors ${
-              i < item.level
-                ? 'bg-gradient-to-r from-purple-400 to-pink-400'
-                : 'bg-zinc-200/60'
-            }`}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/**
- * 通用板块标题组件
- * @param title - 主标题
- * @param subtitle - 副标题描述
- */
-function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) {
-  return (
-    <motion.div
-      initial={{ y: 30, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="mb-8"
-    >
-      <h2 className="text-2xl md:text-3xl font-bold mb-2 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-        {title}
-      </h2>
-      <p className="text-zinc-500 text-sm md:text-base">{subtitle}</p>
-    </motion.div>
-  );
-}
-
-/**
- * 研究方向列表组件（默认显示前 3 个，可展开全部）
- */
-const RESEARCH_DEFAULT_COUNT = 3;
-
-function ResearchDirectionsList() {
-  const [showAll, setShowAll] = useState(false);
-  const all = directions as { title: string; emoji?: string; keywords?: string[]; content: string }[];
-  const displayed = showAll ? all : all.slice(0, RESEARCH_DEFAULT_COUNT);
-  const hasMore = all.length > RESEARCH_DEFAULT_COUNT;
-
-  return (
-    <div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {displayed.map((dir, idx) => (
-          <motion.div
-            key={dir.title}
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ type: "spring", stiffness: 120, damping: 20, delay: idx * 0.1 }}
-            className="relative card-skeu texture-spot p-6"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center text-lg">
-                {dir.emoji || "🔬"}
-              </div>
-              <h3 className="font-semibold text-zinc-800">{dir.title}</h3>
-            </div>
-            {dir.content && (
-              <div
-                className="text-sm text-zinc-600 leading-relaxed mb-4 [&_p]:mb-2"
-                dangerouslySetInnerHTML={{ __html: dir.content }}
-              />
-            )}
-            <div className="flex flex-wrap gap-1.5">
-              {(dir.keywords || []).map((kw) => (
-                <span key={kw} className="chip-ios px-2 py-0.5 text-[11px] text-zinc-600">
-                  {kw}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-      {hasMore && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mt-6"
-        >
-          <button
-            onClick={() => setShowAll(!showAll)}
-            className="btn-ios px-6 py-2.5 text-sm text-zinc-600 hover:text-zinc-800"
-          >
-            {showAll ? "收起" : `查看全部 ${all.length} 个方向`}
-            <svg
-              className={`w-3.5 h-3.5 transition-transform ${showAll ? "rotate-180" : ""}`}
-              viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-            >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </button>
-        </motion.div>
-      )}
-    </div>
-  );
-}
-
-/**
- * 论文列表组件（横向分类标签页 + 标签筛选）
- * @param papers - 论文数据数组
- */
-function PapersList({ papers }: { papers: PaperContent[] }) {
-  const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [activeCat, setActiveCat] = useState<string>("全部");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
-  // 分类配置（名称 → emoji 映射）
-  const catConfig = useMemo(() => {
-    const map = new Map<string, string>();
-    (categoriesData as { id: string; name: string; emoji: string }[]).forEach(
-      (c) => map.set(c.name, c.emoji)
-    );
-    return map;
-  }, []);
-
-  // 提取所有标签
-  const allTags = useMemo(() => {
-    const tagSet = new Set<string>();
-    papers.forEach((p) => (p.tags || []).forEach((t) => tagSet.add(t)));
-    return Array.from(tagSet).sort();
-  }, [papers]);
-
-  // 提取所有分类
-  const allCats = useMemo(() => {
-    const catSet = new Set<string>();
-    papers.forEach((p) => catSet.add(p.category || "其他"));
-    return ["全部", ...Array.from(catSet)];
-  }, [papers]);
-
-  // 搜索过滤函数
-  const matchesSearch = useCallback(
-    (paper: PaperContent, query: string): boolean => {
-      if (!query) return true;
-      const lowerQuery = query.toLowerCase();
-
-      // 搜索标题
-      if (paper.title?.toLowerCase().includes(lowerQuery)) return true;
-
-      // 搜索作者
-      if (paper.authors?.toLowerCase().includes(lowerQuery)) return true;
-
-      // 搜索会议/期刊
-      if (paper.venue?.toLowerCase().includes(lowerQuery)) return true;
-
-      // 搜索标签
-      if (paper.tags?.some((tag) => tag.toLowerCase().includes(lowerQuery)))
-        return true;
-
-      // 搜索分类
-      if (paper.category?.toLowerCase().includes(lowerQuery)) return true;
-
-      // 搜索笔记内容（移除 HTML 标签后搜索）
-      if (paper.content) {
-        const textContent = paper.content.replace(/<[^>]*>/g, "");
-        if (textContent.toLowerCase().includes(lowerQuery)) return true;
-      }
-
-      return false;
-    },
-    []
-  );
-
-  // 按标签 + 分类 + 搜索筛选
-  const filtered = useMemo(() => {
-    return papers.filter((p) => {
-      const tagMatch = !activeTag || (p.tags || []).includes(activeTag);
-      const catMatch =
-        activeCat === "全部" || (p.category || "其他") === activeCat;
-      const searchMatch = matchesSearch(p, searchQuery);
-      return tagMatch && catMatch && searchMatch;
-    });
-  }, [papers, activeTag, activeCat, searchQuery, matchesSearch]);
-
-  return (
-    <div>
-      {/* 搜索输入框 */}
-      <SearchInput
-        resultCount={filtered.length}
-        totalCount={papers.length}
-        onSearch={setSearchQuery}
-      />
-
-      {/* 分类板块卡片（横向） */}
-      {allCats.length > 2 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-          {allCats.map((cat, idx) => {
-            const count = cat === "全部"
-              ? papers.length
-              : papers.filter((p) => (p.category || "其他") === cat).length;
-            const isActive = activeCat === cat;
-            const emoji = cat === "全部" ? "📚" : (catConfig.get(cat) || "📁");
-            return (
-              <motion.button
-                key={cat}
-                initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                whileInView={{ scale: 1, opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  type: "spring",
-                  stiffness: 120,
-                  damping: 20,
-                  delay: idx * 0.08,
-                }}
-                whileHover={{ scale: 1.04, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => setActiveCat(cat)}
-                className={`group relative card-skeu texture-spot p-5 text-left cursor-pointer transition-all duration-300 ${
-                  isActive
-                    ? "ring-2 ring-purple-300/60 border-purple-200/50"
-                    : "border-white/10 hover:border-white/50"
-                }`}
-              >
-                {/* 激活时的渐变背景 */}
-                {isActive && (
-                  <div className="absolute inset-0 rounded-[20px] bg-gradient-to-br from-purple-100/30 via-transparent to-pink-100/20 pointer-events-none" />
-                )}
-                {/* hover 渐变 */}
-                <div className="absolute inset-0 rounded-[20px] bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-2xl">{emoji}</span>
-                    <span className={`text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent transition-all ${
-                      isActive
-                        ? "from-purple-500 to-pink-500"
-                        : "from-zinc-400 to-zinc-400 group-hover:from-purple-400 group-hover:to-pink-400"
-                    }`}>
-                      {count}
-                    </span>
-                  </div>
-                  <h3 className={`font-medium text-sm transition-colors ${
-                    isActive ? "text-zinc-800" : "text-zinc-600 group-hover:text-zinc-800"
-                  }`}>
-                    {cat}
-                  </h3>
-                </div>
-              </motion.button>
-            );
-          })}
-        </div>
-      )}
-
-      {/* 标签筛选 */}
-      {allTags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-6">
-          <button
-            onClick={() => setActiveTag(null)}
-            className={`chip-ios px-3 py-1 text-xs transition-colors ${
-              !activeTag
-                ? "bg-purple-100/60 border-purple-200/60 text-purple-700"
-                : "text-zinc-500"
-            }`}
-          >
-            全部标签
-          </button>
-          {allTags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-              className={`chip-ios px-3 py-1 text-xs transition-colors ${
-                activeTag === tag
-                  ? "bg-purple-100/60 border-purple-200/60 text-purple-700"
-                  : "text-zinc-500"
-              }`}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* 论文列表 */}
-      <div className="space-y-4">
-        {filtered.map((paper, idx) => (
-          <PaperCard key={paper.title} paper={paper} idx={idx} searchQuery={searchQuery} />
-        ))}
-      </div>
-
-      {filtered.length === 0 && (
-        <p className="text-center text-zinc-400 text-sm py-8">
-          没有匹配的论文
-        </p>
-      )}
-    </div>
-  );
-}
-
-/**
- * 论文卡片组件（可展开）
- * @param paper - 论文数据
- * @param idx - 序号（用于动画延迟）
- * @param searchQuery - 搜索关键词（用于高亮显示）
- */
-function PaperCard({ paper, idx, searchQuery = "" }: { paper: PaperContent; idx: number; searchQuery?: string }) {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <motion.div
-      initial={{ x: -20, opacity: 0 }}
-      whileInView={{ x: 0, opacity: 1 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.5, ease: "easeOut", delay: idx * 0.08 }}
-      className="relative card-skeu texture-spot overflow-hidden"
-    >
-      {/* 可点击的头部 */}
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full text-left p-5 flex items-start gap-4 hover:bg-white/5 transition-colors"
-      >
-        <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/15 to-pink-500/15 flex items-center justify-center">
-          <svg className="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-          </svg>
-        </div>
-        <div className="flex-1 min-w-0">
-          {/* 标题行 */}
-          <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <h3 className="font-medium text-zinc-800 text-sm md:text-base leading-tight">
-              <HighlightText text={paper.title} query={searchQuery} />
-            </h3>
-            {paper.venue && (
-              <span className="text-xs text-zinc-400 font-mono">
-                <HighlightText text={paper.venue} query={searchQuery} />
-              </span>
-            )}
-            {paper.status && (
-              <span className={`px-2 py-0.5 text-[10px] rounded-full border ${
-                paper.status === "已复现"
-                  ? "bg-emerald-50 border-emerald-200 text-emerald-600"
-                  : paper.status === "复现中"
-                  ? "bg-blue-50 border-blue-200 text-blue-600"
-                  : paper.status === "已读"
-                  ? "bg-purple-50 border-purple-200 text-purple-600"
-                  : "bg-zinc-50 border-zinc-200 text-zinc-500"
-              }`}>
-                {paper.status}
-              </span>
-            )}
-          </div>
-          {/* 作者 */}
-          {paper.authors && (
-            <p className="text-xs text-zinc-500 mb-2">
-              <HighlightText text={paper.authors} query={searchQuery} />
-            </p>
-          )}
-          {/* 进度条 */}
-          {paper.progress !== undefined && (
-            <div className="flex items-center gap-2 mb-2">
-              <div className="flex-1 h-1.5 bg-zinc-200/60 rounded-full overflow-hidden max-w-48">
-                <div
-                  className="h-full bg-gradient-to-r from-purple-400 to-pink-400 rounded-full transition-all"
-                  style={{ width: `${paper.progress}%` }}
-                />
-              </div>
-              <span className="text-[11px] text-zinc-400">{paper.progress}%</span>
-            </div>
-          )}
-          {/* 标签 */}
-          {paper.tags && paper.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5">
-              {paper.tags.map((tag) => (
-                <span key={tag} className="chip-ios px-2 py-0.5 text-[10px] text-zinc-500">
-                  <HighlightText text={tag} query={searchQuery} />
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-        {/* 展开箭头 */}
-        <svg
-          className={`flex-shrink-0 w-4 h-4 text-zinc-400 transition-transform duration-200 mt-1 ${expanded ? "rotate-180" : ""}`}
-          viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-        >
-          <path d="M6 9l6 6 6-6" />
-        </svg>
-      </button>
-
-      {/* 展开内容 */}
-      <AnimatePresence>
-        {expanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <div className="px-5 pb-5 border-t border-white/10 pt-4">
-              {/* 论文链接 */}
-              <div className="flex flex-wrap gap-3 mb-3">
-                {paper.repo && paper.repo !== "" && (
-                  <Link
-                    href={paper.repo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm text-purple-600 hover:text-purple-700 transition-colors"
-                  >
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
-                    </svg>
-                    项目代码
-                  </Link>
-                )}
-                {paper.arxiv && (
-                  <Link
-                    href={paper.arxiv}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
-                  >
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                    arXiv
-                  </Link>
-                )}
-                {!paper.arxiv && paper.doi && (
-                  <Link
-                    href={`https://doi.org/${paper.doi}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
-                  >
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                    DOI
-                  </Link>
-                )}
-                {!paper.arxiv && !paper.doi && paper.url && (
-                  <Link
-                    href={paper.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
-                  >
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                    论文链接
-                  </Link>
-                )}
-              </div>
-              {/* 笔记正文 */}
-              {paper.content && (
-                <div
-                  className="prose prose-sm prose-zinc max-w-none text-zinc-600 leading-relaxed
-                    [&_h2]:text-base [&_h2]:font-semibold [&_h2]:text-zinc-700 [&_h2]:mt-4 [&_h2]:mb-2
-                    [&_h3]:text-sm [&_h3]:font-medium [&_h3]:text-zinc-700 [&_h3]:mt-3 [&_h3]:mb-1.5
-                    [&_p]:mb-3 [&_p]:text-sm
-                    [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ul]:space-y-1
-                    [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_ol]:space-y-1
-                    [&_li]:text-sm
-                    [&_code]:text-xs [&_code]:bg-purple-50 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded
-                    [&_blockquote]:border-l-2 [&_blockquote]:border-purple-300 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-zinc-500"
-                  dangerouslySetInnerHTML={{ __html: paper.content }}
-                />
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
   );
 }

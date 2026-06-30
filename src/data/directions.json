@@ -1,32 +1,40 @@
 [
   {
-    "title": "交互感知动作生成",
-    "emoji": "🔬",
+    "title": "图像融合",
+    "emoji": "🔀",
+    "keywords": [
+      "Image Fusion",
+      "Infrared-Visible",
+      "Multi-Modal",
+      "Feature Extraction",
+      "Semantic-Aware"
+    ],
+    "content": "<p>研究红外与可见光等多模态图像的融合方法，探索如何在保留各模态关键信息的同时生成高质量的融合图像。关注语义感知的实时融合网络，以及融合结果对高层视觉任务的促进作用。</p>\n"
+  },
+  {
+    "title": "人体交互生成",
+    "emoji": "🤸",
     "keywords": [
       "Human Interaction",
       "Motion Generation",
-      "Physics-aware"
-    ],
-    "content": "<p>研究多人场景下的交互动作合成，让模型理解人与人之间的物理互动关系，生成自然协调的交互动作序列。</p>\n"
-  },
-  {
-    "title": "文本驱动动作合成",
-    "emoji": "✍️",
-    "keywords": [
+      "Diffusion",
       "Text2Motion",
-      "Language-Action Alignment",
-      "Fine-grained Control"
+      "Physics-aware",
+      "3D Interaction"
     ],
-    "content": "<p>将自然语言描述映射为连续人体动作序列，探索语言与动作空间的对齐方法，实现细粒度的动作控制。</p>\n"
+    "content": "<p>研究多人场景下的交互动作合成，让模型理解人与人之间的物理互动关系，生成自然协调的交互动作序列。探索基于扩散模型的动作生成方法，包括文本驱动动作生成、交互感知的动作合成以及物理引导的交互建模。</p>\n"
   },
   {
-    "title": "扩散模型与美学界面",
-    "emoji": "🎨",
+    "title": "路径规划",
+    "emoji": "🗺️",
     "keywords": [
-      "Diffusion Models",
-      "Aesthetic Interface",
-      "Visual Generation"
+      "Path Planning",
+      "Motion Planning",
+      "Navigation",
+      "Trajectory Optimization",
+      "A*",
+      "RRT"
     ],
-    "content": "<p>探索扩散模型在视觉生成中的应用，同时研究如何构建具有美学价值的人机交互界面。</p>\n"
+    "content": "<p>研究智能体在复杂环境中的路径规划与运动决策方法，包括基于搜索的经典算法、基于采样的快速路径规划以及数据驱动的轨迹优化，探索如何让机器人和虚拟角色高效、安全地到达目标。</p>\n"
   }
 ]

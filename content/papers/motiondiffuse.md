@@ -8,6 +8,7 @@ progress: 60
 status: 阅读中
 repo: ""
 tags: [Diffusion, Text2Motion]
+direction: 人体交互生成
 ---
 
 ## 论文概述

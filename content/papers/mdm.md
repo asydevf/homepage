@@ -4,6 +4,7 @@ arxiv: https://arxiv.org/abs/2209.14916
 progress: 30
 status: 待读
 tags: [Diffusion, Motion]
+direction: 人体交互生成
 ---
 
 ## 阅读笔记

@@ -6,6 +6,7 @@ year: 6
 progress: 0
 status: 待读
 tags: []
+direction: 图像融合
 ---
 ## 阅读笔记
 （待补充）
